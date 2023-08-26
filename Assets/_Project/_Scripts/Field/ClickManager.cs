@@ -5,7 +5,7 @@ namespace Field
 {
 public class ClickManager //: MonoBehaviour
 {
-    readonly Board _board; //fixme циклическая зависимость
+    readonly Board _board; // ffixme циклическая зависимость
 
     Cell _selected;
 
