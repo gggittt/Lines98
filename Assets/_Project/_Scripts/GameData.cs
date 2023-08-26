@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-namespace _Project._Scripts
-{
 public class GameData : MonoBehaviour
 {
     //все в одном классе - чтобы при обнове игры, или при загрузке из облака, можно было бы легко изменить данные на другие.
@@ -26,5 +24,4 @@ public class GameData : MonoBehaviour
     {
 
     }
-}
 }

@@ -1,8 +1,8 @@
 using System;
-using _Project._Scripts.Field.FieldItem;
+using Field.ItemGeneration.FieldItem;
 using UnityEngine;
 
-namespace _Project._Scripts.Field
+namespace Field.ItemGeneration
 {
 public class BallFactory : MonoBehaviour
 {
@@ -12,6 +12,7 @@ public class BallFactory : MonoBehaviour
         Ball newBall = GameObject.Instantiate( _prefab );
 
         newBall.SetColor( GetRandomItemType() );
+        newBall.ItemSizeType = ItemSizeType.Big;
 
         return newBall;
     }

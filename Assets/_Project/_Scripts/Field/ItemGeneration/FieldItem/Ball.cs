@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace _Project._Scripts.Field.FieldItem
+namespace Field.ItemGeneration.FieldItem
 {
 [ RequireComponent( typeof( BallUi ) ) ]
 public class Ball : MonoBehaviour
@@ -10,7 +10,7 @@ public class Ball : MonoBehaviour
     //IndexToCoords в _grid = не перевод в worldPos
 
     public ItemType ItemType { get; private set; }
-    public ItemSizeType BallSizeType { get; private set; } = ItemSizeType.Small;
+    public ItemSizeType ItemSizeType { get; set; } = ItemSizeType.Small;
 
     BallUi _ballUi;
     void Awake( )
@@ -20,7 +20,6 @@ public class Ball : MonoBehaviour
 
     public void TeleportTo( Vector2 local )
     {
-
         Vector3 worldPos = ToWorldPos( local ); //сейчас телепортируется. нужно передавать List<Vector2Int> по которым пройти
         transform.position = worldPos;
     }

@@ -66,7 +66,7 @@ static class MultiSelectionHistory
 
         SelectionHistoryData prev = _previousSelections.Pop();
         Selection.objects = prev.Selected;
-        OpenWindow( prev.OpenedWindow ); 
+        OpenWindow( prev.OpenedWindow );
 
         _ignoreNextSelectionChangedEvent = true;
     }
@@ -83,7 +83,7 @@ static class MultiSelectionHistory
 
         SelectionHistoryData next = _nextSelections.Pop();
         Selection.objects = next.Selected;
-        OpenWindow( next.OpenedWindow ); 
+        OpenWindow( next.OpenedWindow );
 
         _ignoreNextSelectionChangedEvent = true;
     }

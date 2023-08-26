@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace _Project._Scripts.Field
+namespace Field
 {
 
 public enum SymbolsType

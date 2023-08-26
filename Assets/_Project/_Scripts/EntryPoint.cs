@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using _Project._Scripts.Field;
+using Field;
+using Field.Cells;
 using Unity.Mathematics;
 using UnityEngine;
-
-namespace _Project._Scripts
-{
 
 public class EntryPoint : MonoBehaviour
 {
@@ -46,7 +44,5 @@ public class EntryPoint : MonoBehaviour
 
     }
 
-
-}
 
 }

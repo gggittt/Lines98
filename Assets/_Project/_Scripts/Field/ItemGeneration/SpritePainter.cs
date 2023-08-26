@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using _Project._Scripts.Field.FieldItem;
+using Field.ItemGeneration.FieldItem;
 using UnityEngine;
 
-namespace _Project._Scripts.Field
+namespace Field.ItemGeneration
 {
 public static class SpritePainter //static чтобы не создавать экземпляр Painter для каждого шара
 {

@@ -11,9 +11,9 @@ public enum WindowType
 //https://gist.github.com/Syy9/c0df54799395f0437ef5933ac61ee374
 public static class EditorWindowHelper
 {
-    
+
     // EditorWindow GetWindow<T>(  ) where T : EditorWindow === нельзя т.к. Cannot access internal class 'SceneHierarchyWindow' here
-    
+
     // ProjectWindow тут нету, т.к. оно встроено: EditorUtility.FocusProjectWindow();
 
     public static EditorWindow GetWindow( EditorWindow window )
@@ -22,7 +22,7 @@ public static class EditorWindowHelper
            .Replace( "(", "" )
            .Replace( ")", "" )
             ;
-        
+
         Assembly assembly = typeof( EditorWindow ).Assembly;
         Type type = assembly.GetType( windowName );
         return EditorWindow.GetWindow( type );
@@ -31,12 +31,12 @@ public static class EditorWindowHelper
     public static EditorWindow GetWindow( WindowType windowType )
     {
         string windowName = Convert( windowType );
-        
+
         Assembly assembly = typeof( EditorWindow ).Assembly;
         Type type = assembly.GetType( windowName );
         return EditorWindow.GetWindow( type );
     }
-    
+
 
     /** также есть:
      *     https://github.com/Unity-Technologies/UnityCsReference/tree/master/Editor/Mono

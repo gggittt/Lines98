@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
-using _Project._Scripts.Extensions;
-using _Project._Scripts.Field.FieldItem;
+using Extensions;
+using Field.Cells;
+using Field.ItemGeneration;
+using Field.ItemGeneration.FieldItem;
 using UnityEngine;
 
-namespace _Project._Scripts.Field
+namespace Field
 {
 public class Board : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class Board : MonoBehaviour
     EmptyPositionFinder _emptyPositionFinder;
     //_ballFactory = new();
     Grid<Cell> _cellGrid;
+    ClickManager _clickManager;
 
     public void Init( int width, int height )
     {
@@ -21,8 +24,9 @@ public class Board : MonoBehaviour
         _itemGrid = new Grid<Ball>( width, height );
         _emptyPositionFinder = new EmptyPositionFinder( _itemGrid.Cells );
 
+        _clickManager = new ClickManager( this );
 
-        _cellGrid = _cellCreator.CreateBoard( width, height );
+        _cellGrid = _cellCreator.CreateBoard( _clickManager, width, height );
 
         //_cellCreatorTransform = cellCreatorTransform; //не нужно её тут хранить. мб еще будет отступ. должен ли board Знать о нём?
     }
@@ -32,34 +36,41 @@ public class Board : MonoBehaviour
         List<int> emptyIndexes = _emptyPositionFinder.GetFreeSpaces();
 
         if ( emptyIndexes.Count < ballsAmount )
-            GameOver();
+            Debug.Log( $"<color=magenta> {emptyIndexes.Count} + {ballsAmount} > {_itemGrid.Cells.Length}  </color>" );
 
 
         for ( int i = 0; i < ballsAmount; i++ )
         {
             int positionIndex = emptyIndexes.CutRandom(); //PopRandom()?
 
-            SetupBall( positionIndex );
-        }
-        //todo indexator itemGrid[ 1, 2 ];
-    }
-    void SetupBall( int positionIndex )
-    {
 
+            SetupBall( _itemGrid.IndexToCoords( positionIndex ) );
+        }
+    }
+
+    void SetupBall( Vector2Int coord )
+    {
         Ball ball = _ballFactory.CreateRandomBall();
 
+        SetItemToCoord( ball, coord );
 
-        _itemGrid.Set( positionIndex, ball );
+        //Debug.Log( $"<color=yellow> created {ball} </color>", ball );
+        //Debug.Log( $"<color=cyan> at {parentCell} </color>", parentCell );
+    }
+    void SetItemToCoord( Ball ball, Vector2Int to )
+    {
+        _itemGrid.Set( to, ball );
 
-        //Vector2Int coords = _itemGrid.IndexToCoords( positionIndex );
-
-        Transform parentCell = _cellGrid.Get( positionIndex ).transform;
-
+        Transform parentCell = _cellGrid.Get( to ).transform;
         ball.SetParentAndMoveToParent( parentCell );
+    }
 
-        Debug.Log( $"<color=yellow> created {ball} </color>", ball );
-        Debug.Log( $"<color=cyan> at {parentCell} </color>", parentCell );
+    void MoveItemToNewCoord( Ball ball, Vector2Int from, Vector2Int to )
+    {
+        ClearOldPos();
+        void ClearOldPos( ) => _itemGrid.Set( from, null );
 
+        SetItemToCoord( ball, to );
     }
 
     //public Vector3 GridIndexToWorldPos( int index, Vector3 leftUpGridPos )
@@ -69,8 +80,48 @@ public class Board : MonoBehaviour
 
     void GameOver( )
     {
-        throw new System.NotImplementedException();
+
     }
+
+    public bool CanItemInCellBeSelected( Vector2Int coord )
+    {
+        Ball item = _itemGrid.Get( coord );
+
+        bool heldRipeItem = item && item.ItemSizeType == ItemSizeType.Big;
+        return heldRipeItem;
+    }
+
+    public void TryMoveItem( Cell itemHolder, Vector2Int to )
+    {
+        if ( IsPathBlocked( itemHolder.LocalCoord, to ) )
+            return;
+        //bool pathExist = _waveManager.TryPavePath( from: _selectedCell.LocalCoord, to, out _ );
+
+        //bool isLineComplete = _ballMatrix.MoveBigAndSmallBalls( _selectedCell.LocalCoord, bigBallNewCoord: newCoord );
+
+        Ball ball = _itemGrid.Get( itemHolder.LocalCoord );
+        MoveItemToNewCoord( ball, from: itemHolder.LocalCoord, to );
+
+        _clickManager.DeSelectBallInTile( itemHolder );
+    }
+
+    WaveManager _waveManager = new WaveManager();
+
+    bool IsPathBlocked( Vector2Int from, Vector2Int to )
+    {
+        bool pathExist = _waveManager.TryPavePath( from, to, out _ );
+
+        if ( pathExist )
+        {
+            //+ можно нанести урон?
+            return false;
+        }
+
+        Debug.Log( $"<color=cyan>no path from {from} to {to}. </color>" );
+
+        return true;
+    }
+
 
 }
 }

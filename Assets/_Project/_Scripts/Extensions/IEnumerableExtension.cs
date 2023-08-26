@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace _Project._Scripts.Extensions
+namespace Extensions
 {
 public static class EnumerableExtension
 {

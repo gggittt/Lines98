@@ -1,16 +1,19 @@
 ﻿using UnityEngine;
 
-namespace _Project._Scripts.Field
+namespace Field.Cells
 {
 public class CellCreator : MonoBehaviour
 {
     [ SerializeField ] Cell _cellPrefab;
     [ SerializeField ] BoundCoordinatesCreator _boundCreator;
+    ClickManager _clickManager;
+
 
 
     //start at top left position
-    public Grid<Cell> CreateBoard( int xSize = 9, int ySize = 9 )
+    public Grid<Cell> CreateBoard( ClickManager clickManager, int xSize = 9, int ySize = 9 )
     {
+        _clickManager = clickManager;
 
         Grid<Cell> cellGrid = new Grid<Cell>( xSize, ySize );
 
@@ -28,6 +31,7 @@ public class CellCreator : MonoBehaviour
             Cell cell = Instantiate( _cellPrefab, transform );
             cell.LocalCoord = new Vector2Int( x, y );
             cell.name = cell.LocalCoord + " " + nameof( Cell );
+            cell.Clicked += _clickManager.OnCellClick;
             cellGrid.Set( x, y, cell );
 
             SetPosition();

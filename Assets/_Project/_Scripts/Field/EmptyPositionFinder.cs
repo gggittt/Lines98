@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace _Project._Scripts.Field
+namespace Field
 {
 class EmptyPositionFinder
 {

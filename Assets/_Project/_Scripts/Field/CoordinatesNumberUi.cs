@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Project._Scripts.Field
+namespace Field
 {
 public class CoordinatesNumberUi : MonoBehaviour
 {

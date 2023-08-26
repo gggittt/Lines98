@@ -1,4 +1,4 @@
-﻿namespace _Project._Scripts.Field.FieldItem
+﻿namespace Field.ItemGeneration.FieldItem
 {
 public enum ItemSizeType
 {
