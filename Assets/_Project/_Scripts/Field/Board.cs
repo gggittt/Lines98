@@ -41,28 +41,23 @@ public class Board : MonoBehaviour
 
             SetupBall( positionIndex );
         }
-        //itemGrid[ 1, 2 ];
+        //todo indexator itemGrid[ 1, 2 ];
     }
     void SetupBall( int positionIndex )
     {
 
         Ball ball = _ballFactory.CreateRandomBall();
 
-        //todo внутри Pool фабрика, или наоборот?
-        //todo pool.Get( Type typeof(ball) )
-        //todo pool.Get( ItemSizeType Small, ItemType RedBall )
 
         _itemGrid.Set( positionIndex, ball );
 
         //Vector2Int coords = _itemGrid.IndexToCoords( positionIndex );
 
-        //ball.TeleportTo( Vector3.zero ); //координаты изменятся при установке родителя?
         Transform parentCell = _cellGrid.Get( positionIndex ).transform;
 
-        ball.transform.SetParent( parentCell );
-        ball.transform.localPosition = Vector3.zero;
+        ball.SetParentAndMoveToParent( parentCell );
 
-        Debug.Log( $"<color=cyan> created {ball} </color>", ball );
+        Debug.Log( $"<color=yellow> created {ball} </color>", ball );
         Debug.Log( $"<color=cyan> at {parentCell} </color>", parentCell );
 
     }

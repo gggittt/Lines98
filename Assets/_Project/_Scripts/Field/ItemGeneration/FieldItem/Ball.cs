@@ -9,7 +9,7 @@ public class Ball : MonoBehaviour
     //public Vector2Int LocalCoord { get; private set; }
     //IndexToCoords в _grid = не перевод в worldPos
 
-    public ItemType ColorType { get; private set; }
+    public ItemType ItemType { get; private set; }
     public ItemSizeType BallSizeType { get; private set; } = ItemSizeType.Small;
 
     BallUi _ballUi;
@@ -45,5 +45,16 @@ public class Ball : MonoBehaviour
     }
 
 
+    public void SetParentAndMoveToParent( Transform parent )
+    {
+        transform.SetParent( parent );
+        transform.localPosition = Vector3.zero;
+    }
+
+    public void SetColor( ItemType itemType )
+    {
+        ItemType = itemType;
+        _ballUi.Paint( itemType );
+    }
 }
 }

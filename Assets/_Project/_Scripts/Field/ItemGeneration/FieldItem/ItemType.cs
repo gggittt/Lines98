@@ -2,10 +2,10 @@
 {
 public enum ItemType
 {
-    RedBall,
-    GreenBall,
-    BlueBall,
-    YellowBall,
-    PinkBall,
+    Red,
+    Green,
+    Blue,
+    Yellow,
+    Pink,
 }
 }

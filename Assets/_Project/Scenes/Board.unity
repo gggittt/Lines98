@@ -752,6 +752,7 @@ MonoBehaviour:
   _board: {fileID: 1235259462}
   _folder_script_txt_OrCreatedSoAsset: {fileID: 11500000, guid: d5ee42a8591640a68b1b80d82ee627e4,
     type: 3}
+  _canHoldNonUi: {fileID: 1836733089}
 --- !u!4 &1767215432
 Transform:
   m_ObjectHideFlags: 0

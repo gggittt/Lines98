@@ -12,7 +12,6 @@ public class Cell : MonoBehaviour
     void OnMouseUpAsButton()
     {
         Clicked?.Invoke( LocalCoord );
-
     }
 
 

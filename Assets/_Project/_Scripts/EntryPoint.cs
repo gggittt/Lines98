@@ -11,6 +11,7 @@ public class EntryPoint : MonoBehaviour
     [ SerializeField ] GameData _gameData;
     [ SerializeField ] Board _board;
     [ SerializeField ] UnityEngine.Object _folder_script_txt_OrCreatedSoAsset;
+    [ SerializeField ] Transform _canHoldUi;
 
     //[SerializeField] private BallFactory _ballFactory;
     // [ SerializeField ] BallCreator _ballCreator;
