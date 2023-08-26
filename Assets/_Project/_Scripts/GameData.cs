@@ -1,5 +1,4 @@
 ﻿using System;
-using _Project._Scripts.Board;
 using UnityEngine;
 
 namespace _Project._Scripts
@@ -15,10 +14,11 @@ public class GameData : MonoBehaviour
 
     public int boardWidth = 9, boardHeight = 9;
     public int ballPerTurn = 3;
-    public int startBallsAmount;
+    public int startBallsAmount = 10;
     //game session data
     public int score;
     public int turnIndex;
+    public NewBallPosType NewBallPosType;
     //public ItemType[] nextTurnItemsPreview;
 
 

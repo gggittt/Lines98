@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 7212597565998167927}
   - component: {fileID: 6142000630465128037}
   - component: {fileID: -7375674374184436884}
-  - component: {fileID: 6411528735754428626}
-  - component: {fileID: 3723414154639082291}
+  - component: {fileID: 4629314548605768120}
+  - component: {fileID: 161350975490588404}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -101,7 +101,7 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!114 &6411528735754428626
+--- !u!114 &4629314548605768120
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -110,12 +110,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6081708910502065166}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb311cd0b9fd455090b933ffb5900164, type: 3}
+  m_Script: {fileID: 11500000, guid: 8a87094e84834746b0d9074318d7df66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _bigBallLocalScale: {x: 1, y: 1, z: 1}
-  _smallBallLocalScale: {x: 0.5, y: 0.5, z: 0.5}
---- !u!114 &3723414154639082291
+  _smallBallLocalScale: {x: 0.4, y: 0.4, z: 0.4}
+--- !u!114 &161350975490588404
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,8 +124,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6081708910502065166}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef6f5b1b452b444fb2bdab2047646e90, type: 3}
+  m_Script: {fileID: 11500000, guid: f46522eb82eb43fea7bedfc856ff8298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _destroyEffect: {fileID: 0}
-  _moveDuration: 1

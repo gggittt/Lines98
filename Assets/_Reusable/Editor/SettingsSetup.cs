@@ -11,13 +11,13 @@ public static class SettingsSetup
     [ MenuItem( SetupFolderName + nameof( InitAllSettings ) ) ]
     static void InitAllSettings( )
     {
-        Debug.Log( $"<color=cyan> test1 </color>" );
+        Debug.Log( $"<color=cyan> {nameof( InitAllSettings )} </color>" );
 
         EditorSettings.enterPlayModeOptionsEnabled = true;
         //device = any Android Device
     }
 
-    static void SetNewGameObjectAtOrigin(  )
+    static void SetNewGameObjectAtOrigin(  ) //в 2019.4 отсутствует
     {
         //https://youtu.be/fmbYlYU7z9Y?list=PLfmYNuLHEy-PQ6j6kki9kmM3Z5CayRSI0&t=361
         //set new GO position at (0,0,0)

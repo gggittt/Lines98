@@ -1,4 +1,5 @@
-﻿using _Project._Scripts.Board;
+﻿using System.Collections.Generic;
+using _Project._Scripts.Field;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -7,9 +8,9 @@ namespace _Project._Scripts
 
 public class EntryPoint : MonoBehaviour
 {
-    [ SerializeField ] CellCreator _cellCreator;
     [ SerializeField ] GameData _gameData;
-    //[ SerializeField ] GameBoard _board;
+    [ SerializeField ] Board _board;
+    [ SerializeField ] UnityEngine.Object _folder_script_txt_OrCreatedSoAsset;
 
     //[SerializeField] private BallFactory _ballFactory;
     // [ SerializeField ] BallCreator _ballCreator;
@@ -17,18 +18,33 @@ public class EntryPoint : MonoBehaviour
 
     void Start( )
     {
-        Grid<Cell> cellGrid = _cellCreator.CreateBoard( _gameData.boardWidth, _gameData.boardHeight ); //мб мне cellGrid не нужен? мб только itemGrid. Cell только хранит координаты, и отправляет их с событием наверх. мб не нужен даже HasItem
 
-        //_board.CreateRandomBalls(_gameData.startBallsAmount);
-        TestLogs( cellGrid );
+        _board.Init( _gameData.boardWidth, _gameData.boardHeight  );
+        _board.CreateRandomBalls( _gameData.startBallsAmount );
+        //TestLogs( cellGrid );
+    }
+
+    void LaunchNewTurn( )
+    {
+
     }
 
     void TestLogs( Grid<Cell> cellGrid )
     {
+        int[] arr = { 1, 2, 3 };
+        IEnumerable<int> ie = arr;
+        ICollection<int> coll = arr;
+        IList<int> list = arr;
+
         Cell cell = cellGrid.Cells[ 4 ];
+        Debug.Log( ie );
+        Debug.Log( list.Count );
         Debug.Log( "cell.HasItem " + cell.HasItem, cell );
         Debug.Log( this, this );
+        Debug.Log( $"<color=cyan> {_folder_script_txt_OrCreatedSoAsset} </color>" );
+
     }
+
 
 }
 

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Project._Scripts.Board
+namespace _Project._Scripts.Field
 {
 public class CellCreator : MonoBehaviour
 {

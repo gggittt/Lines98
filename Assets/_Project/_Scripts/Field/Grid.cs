@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace _Project._Scripts.Board
+namespace _Project._Scripts.Field
 {
 
 public class Grid<TCell>
@@ -13,7 +13,7 @@ public class Grid<TCell>
     //public Grid( int width, int height, InitFunction init )
     public delegate TCell InitFunction( int x, int y ); // замена Func < int, int, TCell >
 
-    public Grid( int width, int height  )
+    public Grid( int width, int height )
     {
         Cells = new TCell[width * height];
         Width = width;
@@ -24,7 +24,7 @@ public class Grid<TCell>
     {
     }
 
-    public Grid( int width, int height, InitFunction init  )
+    public Grid( int width, int height, InitFunction init )
     {
         Cells = new TCell[width * height];
         Width = width;
@@ -37,6 +37,8 @@ public class Grid<TCell>
 
     public int CoordsToIndex( Vector2Int coords ) =>
         CoordsToIndex( coords.x, coords.y );
+
+
 
     public Vector2Int IndexToCoords( int index ) =>
         new Vector2Int( index % Width, index / Width );
