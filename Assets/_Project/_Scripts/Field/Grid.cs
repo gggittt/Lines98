@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Field.ItemGeneration.FieldItem;
 using UnityEngine;
 
 namespace Field
@@ -12,6 +14,8 @@ public class Grid<TCell>
 
     //public Grid( int width, int height, InitFunction init )
     public delegate TCell InitFunction( int x, int y ); // замена Func < int, int, TCell >
+    public delegate bool Filter( TCell cell );
+    public delegate bool FilterAtCoords( Vector2Int coords );
 
     public Grid( int width, int height )
     {
@@ -20,8 +24,22 @@ public class Grid<TCell>
         Height = height;
     }
 
-    public Grid( Vector2Int size, InitFunction init )
+
+    public HashSet<Vector2Int> GetCoordsOfFilteredItems( Filter filterForEachItem )
     {
+        var result = new HashSet<Vector2Int>();
+
+        for ( int x = 0; x < Width; x++ )
+        for ( int y = 0; y < Height; y++ )
+        {
+            TCell cell = Cells[ CoordsToIndex( x, y ) ];
+            if ( filterForEachItem( cell ) )
+            {
+                result.Add( new Vector2Int( x, y ) );
+            }
+        }
+
+        return result;
     }
 
     public Grid( int width, int height, InitFunction init )

@@ -10,9 +10,10 @@ public class Ball : MonoBehaviour
     //IndexToCoords в _grid = не перевод в worldPos
 
     public ItemType ItemType { get; private set; }
-    public ItemSizeType ItemSizeType { get; set; } = ItemSizeType.Small;
+    public ItemSizeType ItemSizeType { get; set; } = ItemSizeType.Small; //ItemRipingType
 
     BallUi _ballUi;
+
     void Awake( )
     {
         _ballUi = GetComponent<BallUi>();

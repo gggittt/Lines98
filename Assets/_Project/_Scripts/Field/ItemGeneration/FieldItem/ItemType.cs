@@ -7,5 +7,6 @@ public enum ItemType
     Blue,
     Yellow,
     Pink,
+    Wild, Debug,
 }
 }
