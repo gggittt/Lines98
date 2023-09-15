@@ -3,6 +3,7 @@ using System.Linq;
 using Aoiti.Pathfinding;
 using Extensions;
 using Field.Cells;
+using Field.GridManipulation;
 using Field.ItemGeneration;
 using Field.ItemGeneration.FieldItem;
 using UnityEngine;
@@ -13,7 +14,7 @@ public class Board : MonoBehaviour
 {
     [ SerializeField ] CellCreator _cellCreator;
     public event System.Action ItemMoved;
-    public List<int> EmptyCellsIndexes => _positionsFinder.GetCellsWithoutItemsIndexes();
+    public List<Vector2Int> EmptyCellsIndexes => _positionsManager.GetEmptyCellsIndexes();
     public Vector2Int GridSize => new Vector2Int( _itemGrid.Width, _itemGrid.Height );
 
     WaveManager _waveManager = new WaveManager();
@@ -21,52 +22,25 @@ public class Board : MonoBehaviour
     Grid<Ball> _itemGrid;
     Grid<Cell> _cellGrid;
     ClickManager _clickManager;
-    PositionsFinder _positionsFinder;
+    PositionManager _positionsManager;
+    LinesMatchComboChecker _linesMatchComboChecker;
 
-    Aoiti.Pathfinding.PathfinderAoitiSpontaneous<Vector2Int> _pathfinder;
+    // Aoiti.Pathfinding.PathfinderAoitiSpontaneous<Vector2Int> _pathfinder;
 
-    public void Init( int width, int height )
+    public void Init( Vector2Int size )
     {
-        _itemGrid = new Grid<Ball>( width, height );
+        _itemGrid = new Grid<Ball>(  size );
 
         _clickManager = new ClickManager( this );
 
-        _cellGrid = _cellCreator.CreateBoard( _clickManager, width, height );
+        _cellGrid = _cellCreator.CreateBoard( _clickManager,  size );
 
-        _positionsFinder = new PositionsFinder( _itemGrid.Cells );
-        // _positionsFinder = new PositionsFinder( _itemGrid.Cells );
+        _positionsManager = new PositionManager( _itemGrid );
+        _linesMatchComboChecker = new LinesMatchComboChecker( _positionsManager, Direction.AllAxes, 3 );
 
-        PathfinderAoitiSpontaneous<Vector2Int> _pathfinder = new PathfinderAoitiSpontaneous<Vector2Int>(
-            GetManhattanDistance, GetConnectedNodesAndStepCosts );
+        // PathfinderAoitiSpontaneous<Vector2Int> pathfinder = new PathfinderAoitiSpontaneous<Vector2Int>( GetManhattanDistance, GetConnectedNodesAndStepCosts );
 
         //_cellCreatorTransform = cellCreatorTransform; //не нужно её тут хранить. мб еще будет отступ. должен ли board Знать о нём?
-    }
-
-    float GetManhattanDistance( Vector2Int t1, Vector2Int t2 ) =>
-        Mathf.Abs( t1.x - t2.x ) + Mathf.Abs( t1.y - t2.y ); //только прямо, не по диагонали
-    Dictionary<Vector2Int, float> GetConnectedNodesAndStepCosts( Vector2Int item )
-        => GetSideNodesAndCosts( item );
-    Dictionary<Vector2Int, float> GetSideNodesAndCosts2( Vector2Int item )
-    {
-        //мб тупо в структру и в List<NodeWithCost>. и в неё GetHeuristicDistance,
-        Dictionary<Vector2Int, float> adjacentNodesAndCosts = new Dictionary<Vector2Int, float>
-        { { new Vector2Int( item.x + 1, item.y ), 1f },
-          { new Vector2Int( item.x - 1, item.y ), 1f },
-          { new Vector2Int( item.x, item.y + 1 ), 1f },
-          { new Vector2Int( item.x, item.y - 1 ), 1f } };
-
-        return adjacentNodesAndCosts;
-    }
-    Dictionary<Vector2Int, float> GetSideNodesAndCosts( Vector2Int item )
-    {
-        Dictionary<Vector2Int, float> adjacentNodesAndCosts = new Dictionary<Vector2Int, float>();
-
-        foreach ( Direction side in Direction.Sides )
-        {
-            adjacentNodesAndCosts.Add(side, 1f );
-        }
-
-        return adjacentNodesAndCosts;
     }
 
 
@@ -74,6 +48,7 @@ public class Board : MonoBehaviour
     {
         SetItemToCoord( ball, _itemGrid.IndexToCoords( positionIndex ) );
     }
+
 
     public void SetItemToCoord( Ball ball, Vector2Int to )
     {
@@ -111,7 +86,7 @@ public class Board : MonoBehaviour
     {
         Ball item = _itemGrid.Get( coord );
 
-        bool heldRipeItem = item && item.ItemSizeType == ItemSizeType.Big;
+        bool heldRipeItem = item && item.RipedType == ItemRipeType.Big;
         return heldRipeItem;
     }
 
@@ -127,6 +102,8 @@ public class Board : MonoBehaviour
         MoveItemToCoord( ball, from: itemHolder.LocalCoord, to );
 
         _clickManager.DeSelectBallInTile( itemHolder );
+
+        //_linesMatchComboChecker.CheckAllDirectionsAtPoint( to );
 
         OnItemMove();
 
@@ -180,5 +157,14 @@ public class Board : MonoBehaviour
 
 
 
+    public bool IsInBounds( Vector2Int coords )
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool IsSameType( Vector2Int origin, object neighbour )
+    {
+        throw new System.NotImplementedException();
+    }
 }
 }

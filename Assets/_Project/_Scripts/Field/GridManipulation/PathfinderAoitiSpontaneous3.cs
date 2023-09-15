@@ -30,21 +30,21 @@ public class PathfinderAoitiSpontaneous<T>
 
     //https://youtu.be/P7sFfFLH4iM?t=120
     readonly int _calculatorPatience = 9_999;
-    readonly Func<T, T, float> _heuristicDistance;
-    readonly Func<T, Dictionary<T, float>> _connectedNodesAndStepCosts; //именно connected, т.к. связи мб не только с neighbours
+    readonly Func<T, T, float> _getHeuristicDistance;
+    readonly Func<T, Dictionary<T, float>> _getConnectedNodesAndStepCosts; //именно connected, т.к. связи мб не только с neighbours
     //пока нужна только: Func<T, T> _walkableNeighbours; //пока stepCost не нужен?
 
-    public PathfinderAoitiSpontaneous( Func<T, T, float> heuristicDistance,
-        Func<T, Dictionary<T, float>> connectedNodesAndStepCosts )
+    public PathfinderAoitiSpontaneous( Func<T, T, float> getHeuristicDistance,
+        Func<T, Dictionary<T, float>> getConnectedNodesAndStepCosts )
     {
-        _heuristicDistance = heuristicDistance;
-        _connectedNodesAndStepCosts = connectedNodesAndStepCosts;
+        _getHeuristicDistance = getHeuristicDistance;
+        _getConnectedNodesAndStepCosts = getConnectedNodesAndStepCosts;
     }
 
     public Path GenerateAStarPath( T startNode, T endNode )
     {
 
-        float startToEndDistance = _heuristicDistance( startNode, endNode );
+        float startToEndDistance = _getHeuristicDistance( startNode, endNode );
         int calculatorPatience = _calculatorPatience;
 
         HashSet<T> closedList = new HashSet<T>();
@@ -73,11 +73,11 @@ public class PathfinderAoitiSpontaneous<T>
             bool reachEnd = currentNode.Equals( endNode );
             if ( reachEnd )
             {
-                return RetracePath( startNode, currentNode, directions ); //gather collect accumulate, congest, agglomerate, gather, congregate RetracePath assemble, accumulate, compile
+                return RetracePath( startNode, currentNode, directions ); //gather collect accumulate, congest, agglomerate, congregate RetracePath assemble, accumulate, compile
             }
 
             NodeValues nodeValues = openList[ currentNode ];
-            foreach ( KeyValuePair<T, float> nodeAndDistance in _connectedNodesAndStepCosts( currentNode ) )
+            foreach ( KeyValuePair<T, float> nodeAndDistance in _getConnectedNodesAndStepCosts( currentNode ) )
             {
                 T neighbour = nodeAndDistance.Key;
                 float distanceCurrentToNeighbour = nodeAndDistance.Value;
@@ -94,7 +94,7 @@ public class PathfinderAoitiSpontaneous<T>
                 if ( containsKey )
                     continue;
 
-                float endToNeighbourDistance = _heuristicDistance( neighbour, endNode );
+                float endToNeighbourDistance = _getHeuristicDistance( neighbour, endNode );
                 float finalPriority = endToNeighbourDistance + distanceStartToNeighbour;
                 directions[ neighbour ] = currentNode;
 

@@ -41,19 +41,19 @@ public class CellsOfTypeFinder
     }
 
 
-    HashSet<Vector2Int> GetIndexesWithItems( ItemSizeType requestedType ) =>
+    HashSet<Vector2Int> GetIndexesWithItems( ItemRipeType requestedType ) =>
         GetIndexesWithItems( new[] { requestedType } );
 
-    HashSet<Vector2Int> GetIndexesWithItems( ItemSizeType[] requestedTypes )
+    HashSet<Vector2Int> GetIndexesWithItems( ItemRipeType[] requestedTypes )
     {
         Grid<Ball>.Filter filter = IsItemOfType( requestedTypes );
         return _grid.GetCoordsOfFilteredItems( filter );
     }
 
-    HashSet<Vector2Int> GetIndexesWithItems2( ItemSizeType[] requestedTypes )
+    HashSet<Vector2Int> GetIndexesWithItems2( ItemRipeType[] requestedTypes )
     {
         HashSet<Vector2Int> result = new HashSet<Vector2Int>();
-        foreach ( ItemSizeType type in requestedTypes )
+        foreach ( ItemRipeType type in requestedTypes )
         {
             Grid<Ball>.Filter filter = IsItemOfType( type );
 
@@ -64,20 +64,20 @@ public class CellsOfTypeFinder
     }
 
 
-    HashSet<Vector2Int> GetIndexesWithoutItems( ItemSizeType[] forbiddenTypes )
+    HashSet<Vector2Int> GetIndexesWithoutItems( ItemRipeType[] forbiddenTypes )
     {
         Grid<Ball>.Filter filter = IsItemNotType( forbiddenTypes );
         return _grid.GetCoordsOfFilteredItems( filter );
     }
 
 
-    Grid<Ball>.Filter IsItemOfType( ItemSizeType value ) => ball => ball.ItemSizeType == value;
-    Grid<Ball>.Filter IsItemOfType( ItemSizeType[] value ) => ball =>
-        value.Any( itemSizeType => ball.ItemSizeType == itemSizeType );
+    Grid<Ball>.Filter IsItemOfType( ItemRipeType value ) => ball => ball.RipedType == value;
+    Grid<Ball>.Filter IsItemOfType( ItemRipeType[] value ) => ball =>
+        value.Any( itemSizeType => ball.RipedType == itemSizeType );
 
-    Grid<Ball>.Filter IsItemNotType( ItemSizeType value ) => ball => ball.ItemSizeType != value;
-    Grid<Ball>.Filter IsItemNotType( ItemSizeType[] value ) => ball =>
-        value.Any( itemSizeType => ball.ItemSizeType != itemSizeType );
+    Grid<Ball>.Filter IsItemNotType( ItemRipeType value ) => ball => ball.RipedType != value;
+    Grid<Ball>.Filter IsItemNotType( ItemRipeType[] value ) => ball =>
+        value.Any( itemSizeType => ball.RipedType != itemSizeType );
 
 }
 }

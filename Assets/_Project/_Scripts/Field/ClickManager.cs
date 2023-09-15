@@ -1,15 +1,20 @@
 ﻿using Field.Cells;
+using Field.GridManipulation;
 using UnityEngine;
 
 namespace Field
 {
-public class ClickManager //: MonoBehaviour
+public class ClickManager //: MonoBehaviour //ClickHandler
 {
     readonly Board _board; // ffixme циклическая зависимость
+    //PositionManager<> positionManager
 
     Cell _selected;
 
-    public ClickManager( Board board ) => _board = board;
+    public ClickManager( Board board  )
+    {
+        _board = board;
+    }
 
     public void OnCellClick( Cell cell )
     {

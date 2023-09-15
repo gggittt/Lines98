@@ -9,8 +9,9 @@ public class Ball : MonoBehaviour
     //public Vector2Int LocalCoord { get; private set; }
     //IndexToCoords в _grid = не перевод в worldPos
 
-    public ItemType ItemType { get; private set; }
-    public ItemSizeType ItemSizeType { get; set; } = ItemSizeType.Small; //ItemRipingType
+    public ShapeType Shape { get; private set; } //Color // elementForm
+    public ItemRipeType RipedType { get; set; } = ItemRipeType.Small; //ItemRipingType
+    public bool Riped => RipedType == ItemRipeType.Big;  //maturated. Ripped=разорванный
 
     BallUi _ballUi;
 
@@ -51,10 +52,10 @@ public class Ball : MonoBehaviour
         transform.localPosition = Vector3.zero;
     }
 
-    public void SetColor( ItemType itemType )
+    public void SetColor( ShapeType shapeType )
     {
-        ItemType = itemType;
-        _ballUi.Paint( itemType );
+        Shape = shapeType;
+        _ballUi.Paint( shapeType );
     }
 }
 }

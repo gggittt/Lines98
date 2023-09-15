@@ -13,8 +13,11 @@ public class Grid<TCell>
     public int Height { get; }
 
     //public Grid( int width, int height, InitFunction init )
-    public delegate TCell InitFunction( int x, int y ); // замена Func < int, int, TCell >
+    public delegate TCell InitFunction( int x, int y ); // замена Func < int, int, TCell > //подписать их на событие тут?
+
     public delegate bool Filter( TCell cell );
+
+    // Func<bool, TCell> filterForeEachItem;
     public delegate bool FilterAtCoords( Vector2Int coords );
 
     public Grid( int width, int height )
@@ -23,7 +26,10 @@ public class Grid<TCell>
         Width = width;
         Height = height;
     }
+    public Grid( Vector2Int size ) : this( size.x, size.y )
+    {
 
+    }
 
     public HashSet<Vector2Int> GetCoordsOfFilteredItems( Filter filterForEachItem )
     {
@@ -42,12 +48,7 @@ public class Grid<TCell>
         return result;
     }
 
-    public Grid( int width, int height, InitFunction init )
-    {
-        Cells = new TCell[width * height];
-        Width = width;
-        Height = height;
-    }
+
 
 
     public int CoordsToIndex( int x, int y ) =>
@@ -78,7 +79,7 @@ public class Grid<TCell>
         Cells[ index ];
 
 
-    public bool AreCoordsValid( Vector2Int coords ) =>
+    public bool IsInBounds( Vector2Int coords ) =>
         ( coords.x > 0 && coords.x < Width - 1 && coords.y > 0 && coords.y < Height - 1 );
 
 
@@ -93,5 +94,6 @@ public class Grid<TCell>
         return IndexToCoords( i );
     }
 
+    public TCell this[ Vector2Int coords ] { get { return Get( coords ); } }
 }
 }

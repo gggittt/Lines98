@@ -703,7 +703,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _numberPrefab: {fileID: 8076890346446937629, guid: cbe975aae8a1cc64198085074dc3f2f5,
     type: 3}
-  _boundSymbolsType: 2
+  _boundSymbolsType: 0
 --- !u!4 &1663193340
 Transform:
   m_ObjectHideFlags: 0
@@ -750,9 +750,7 @@ MonoBehaviour:
   _gameData: {fileID: 778743567}
   _board: {fileID: 1235259462}
   _itemFactory: {fileID: 1796581592}
-  _folder_script_txt_OrCreatedSoAsset: {fileID: 102900000, guid: db8617fe215069f41a191ec76a14470c,
-    type: 3}
-  _canHoldUi: {fileID: 1836733089}
+  _debug: 1
 --- !u!4 &1767215432
 Transform:
   m_ObjectHideFlags: 0

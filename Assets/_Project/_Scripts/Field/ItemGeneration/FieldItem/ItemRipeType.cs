@@ -1,6 +1,6 @@
 ﻿namespace Field.ItemGeneration.FieldItem
 {
-public enum ItemSizeType
+public enum ItemRipeType
 {
         Small, //preview
         Big,

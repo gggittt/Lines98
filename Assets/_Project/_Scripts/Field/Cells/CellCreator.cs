@@ -11,17 +11,17 @@ public class CellCreator : MonoBehaviour
 
 
     //start at top left position
-    public Grid<Cell> CreateBoard( ClickManager clickManager, int xSize = 9, int ySize = 9 )
+    public Grid<Cell> CreateBoard( ClickManager clickManager, Vector2Int size )
     {
         _clickManager = clickManager;
 
-        Grid<Cell> cellGrid = new Grid<Cell>( xSize, ySize );
+        Grid<Cell> cellGrid = new Grid<Cell>( size.x, size.y );
 
         Vector3 cellLocalScale = _cellPrefab.transform.localScale;
-        _boundCreator.CreateBounds( xSize, ySize, cellLocalScale );
+        _boundCreator.CreateBounds( size.x, size.y, cellLocalScale );
 
-        for ( int y = 0; y < ySize; y++ )
-        for ( int x = 0; x < xSize; x++ )
+        for ( int y = 0; y < size.y; y++ )
+        for ( int x = 0; x < size.x; x++ )
         {
             CreateTile( x, y );
         }

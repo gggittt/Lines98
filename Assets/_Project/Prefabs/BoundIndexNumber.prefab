@@ -85,7 +85,7 @@ GameObject:
   - component: {fileID: 4771097174411032359}
   - component: {fileID: 8076890346446937629}
   m_Layer: 0
-  m_Name: BoundIndexNumber NEW
+  m_Name: BoundIndexNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -119,7 +119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _text: {fileID: 8023439961146843239}
-  _startCountWith: 1
+  _startCountWith: 0
 --- !u!1 &8023439960503434411
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,8 +9,8 @@ public class GameData : MonoBehaviour
 
     const int MinSize = 1;
     [ SerializeField, Range( MinSize, 99 ) ]
-
     public int boardWidth = 9, boardHeight = 9;
+
     public int ballPerTurn = 3;
     public int startBallsAmount = 10;
     //game session data

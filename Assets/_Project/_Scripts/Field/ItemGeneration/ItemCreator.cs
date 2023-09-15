@@ -10,33 +10,43 @@ namespace Field.ItemGeneration
 public class ItemCreator : MonoBehaviour
 {
     [ SerializeField ] Ball _prefab;
-    List<ItemType> _allowedTypeToSpawnAsRandom;
+    List<ShapeType> _allowedTypeToSpawnAsRandom;
+    //todo fluent builder
 
     public void Init( )
     {
-        CalculateAllowedTypeForRandomSpawn();
+        CalculateAllowedShapesForRandomSpawn();
     }
 
-    public Ball CreateBallWIthRandomColor( )
+    public Ball CreateSmallItemWithRandomColor( )
     {
         Ball newBall = GameObject.Instantiate( _prefab );
 
         newBall.SetColor( _allowedTypeToSpawnAsRandom.GetRandom() );
-        newBall.ItemSizeType = ItemSizeType.Big;
+        newBall.RipedType = ItemRipeType.Big;
 
         return newBall;
     }
 
-    void CalculateAllowedTypeForRandomSpawn( )
+    public Ball CreateRipedDebugItem( )
     {
-        _allowedTypeToSpawnAsRandom = new List<ItemType>();
+        Ball newBall = GameObject.Instantiate( _prefab );
 
-        Array cellTypes = Enum.GetValues( typeof( ItemType ) );
+        newBall.SetColor( ShapeType.Debug );
+        newBall.RipedType = ItemRipeType.Big;
 
-        ItemType[] cantBeStarted =
-        { ItemType.Wild, ItemType.Debug }; //forbidden
+        return newBall;
+    }
 
-        foreach ( ItemType value in cellTypes )
+    void CalculateAllowedShapesForRandomSpawn( )
+    {
+        _allowedTypeToSpawnAsRandom = new List<ShapeType>();
+
+        Array cellTypes = Enum.GetValues( typeof( ShapeType ) );
+
+        ShapeType[] cantBeStarted = { ShapeType.Wild, ShapeType.Debug }; //forbidden
+
+        foreach ( ShapeType value in cellTypes )
         {
             if ( cantBeStarted.Contains( value ) )
                 continue;
@@ -44,6 +54,7 @@ public class ItemCreator : MonoBehaviour
             _allowedTypeToSpawnAsRandom.Add( value );
         }
     }
+
 
 }
 }

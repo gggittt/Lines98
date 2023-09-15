@@ -10,38 +10,49 @@ public class EntryPoint : MonoBehaviour
     [ SerializeField ] GameData _gameData;
     [ SerializeField ] Board _board;
     [ SerializeField ] ItemFactory _itemFactory;
-
-
-
-    //[SerializeField] private BallFactory _ballFactory;
-    // [ SerializeField ] BallCreator _ballCreator;
-    // public Grid<Cell> Grid { get; private set; }
+    [ SerializeField ] bool _debug;
 
     void Start( )
     {
-        _board.Init( _gameData.boardWidth, _gameData.boardHeight );
+        Vector2Int size = new Vector2Int( _gameData.boardWidth, _gameData.boardHeight );
+        _board.Init( size );
         _board.ItemMoved += LaunchNewTurn;
 
-        _itemFactory.Init( _board );
-        CreateDebugBalls();
 
+        _itemFactory.Init( _board );
+        if ( _debug )
+        {
+            _itemFactory.CreateDebugItems();
+        }
+        else
+        {
+            TryCreateBalls( 12 );
+        }
+
+
+        var a = Direction.North + Vector2Int.one;
+        Debug.Log($"<color=cyan> {a} </color>");
+
+
+        var arr = new[] { 1, 2, 3, 4 };
+        for ( int i = 0; i < 4; i++ )
+        {
+            var variable = i;
+            // arr[ i ].ToString() //1, 2, 3, 4
+            //{nameof( variable ) //"variable"
+
+            // Debug.Log( $"<color=cyan> {nameof( arr[ i ] )} </color>" );
+        }
 
         //TryCreateBalls( _gameData.startBallsAmount );
 
         //TestLogs( cellGrid );
     }
-    void CreateDebugBalls( )
-    {
-        _itemFactory.CreateDebugBalls();
-
-        //_board.ReserveCells();
-    }
-
 
     void TryCreateBalls( int ballsToCreateAmount )
     {
 
-        List<int> emptyIndexes = _board.EmptyCellsIndexes;
+        List<Vector2Int> emptyIndexes = _board.EmptyCellsIndexes;
 
         if ( IsGameOver( ballsToCreateAmount, emptyIndexes.Count ) )
         {
@@ -58,7 +69,6 @@ public class EntryPoint : MonoBehaviour
 
         //turnIndex++;
     }
-
 
     bool IsGameOver( int ballsToCreate, int emptySpacesAmount )
     {

@@ -8,9 +8,9 @@ public class BallUi : MonoBehaviour
     [ SerializeField ] Vector3 _smallBallLocalScale = new Vector3( .4f, .4f, .4f );
 
 
-    public void Paint( ItemType itemType )
+    public void Paint( ShapeType shapeType )
     {
-        SpritePainter.PaintSprite( this, itemType );
+        SpritePainter.PaintSprite( this, shapeType );
     }
 }
 }
