@@ -11,7 +11,7 @@ public class Ball : MonoBehaviour
 
     public ShapeType Shape { get; private set; } //Color // elementForm
     public ItemRipeType RipedType { get; set; } = ItemRipeType.Small; //ItemRipingType
-    public bool Riped => RipedType == ItemRipeType.Big;  //maturated. Ripped=разорванный
+    public bool Riped => RipedType == ItemRipeType.Big; //maturated. Ripped=разорванный
 
     BallUi _ballUi;
 
@@ -57,5 +57,12 @@ public class Ball : MonoBehaviour
         Shape = shapeType;
         _ballUi.Paint( shapeType );
     }
+
+    public override string ToString( )
+    {
+        return $"{nameof( Ball )}, {RipedType}, {Shape}, ";
+        //+= transform.parent + transform.position
+    }
+
 }
 }

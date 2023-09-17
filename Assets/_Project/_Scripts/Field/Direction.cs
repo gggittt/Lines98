@@ -15,17 +15,24 @@ public class Direction
     public static readonly Direction SouthWest = South + West;
     public static readonly Direction NorthWest = North + West;
 
-    public static readonly Direction[] Sides = { North, East, South, West };
-    public static readonly Direction[] Diagonals = { NorthEast, SouthEast, SouthWest, NorthWest };
+    public static readonly Direction[] Orthogonal =
+    { North, East, South, West };
+    public static readonly Direction[] Diagonals =
+    { NorthEast, SouthEast, SouthWest, NorthWest };
 
-    public static readonly Direction[] Vertical = { North, South };
-    public static readonly Direction[] Horizontal = { West, East };
-    public static readonly Direction[] DiagonalFromNorthWest = { NorthWest, SouthEast };
-    public static readonly Direction[] DiagonalFromNorthEast = { NorthEast, SouthWest };
+    public static readonly Direction[] Vertical =
+    { North, South };
+    public static readonly Direction[] Horizontal =
+    { West, East };
+    public static readonly Direction[] DiagonalFromNorthWest =
+    { NorthWest, SouthEast };
+    public static readonly Direction[] DiagonalFromNorthEast =
+    { NorthEast, SouthWest };
 
     // public List<List<Direction>> AllAxes => new List<List<Direction>>().AddRange();
 
-    public static readonly Direction[][] AllAxes = { Vertical, Horizontal, DiagonalFromNorthWest, DiagonalFromNorthEast, };
+    public static readonly Direction[][] AllAxes =
+    { Vertical, Horizontal, DiagonalFromNorthWest, DiagonalFromNorthEast, };
 
     public static readonly Direction[,] AllAxes2 =
     { { North, South },
@@ -103,7 +110,7 @@ public class Direction
         factor * dir;
 
     public static Vector2Int operator +( Vector2Int pos, Direction dir ) =>
-        new Vector2Int( pos.x + dir.X, pos.y * dir.Y );
+        new Vector2Int( pos.x + dir.X, pos.y + dir.Y );
     //operator +: Vector2, Vector3, Vector3Int
 
     public static implicit operator Vector2Int( Direction self ) //explicit
@@ -141,9 +148,22 @@ public class Direction
     }
 }
 
+public class Shifts
+{
+    public static readonly Vector2Int[] All =
+    { new Vector2Int( - 1, - 1 )
+    , new Vector2Int( 0, - 1 )
+    , new Vector2Int( 1, - 1 )
+    , new Vector2Int( - 1, 0 )
+    , new Vector2Int( 1, 0 )
+    , new Vector2Int( - 1, 1 )
+    , new Vector2Int( 0, 1 )
+    , new Vector2Int( 1, 1 ), };
+
+}
 public class Creature
 {
-    readonly int[] _stats = new int[3];//тогда уж Dictionary
+    readonly int[] _stats = new int[3]; //тогда уж Dictionary
 
     public ref int Strength => ref _stats[ strengthIndex ];
     const int strengthIndex = 0;

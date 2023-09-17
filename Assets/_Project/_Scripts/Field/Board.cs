@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Aoiti.Pathfinding;
 using Extensions;
 using Field.Cells;
 using Field.GridManipulation;
@@ -23,9 +22,9 @@ public class Board : MonoBehaviour
     Grid<Cell> _cellGrid;
     ClickManager _clickManager;
     PositionManager _positionsManager;
-    LinesMatchComboChecker _linesMatchComboChecker;
+    ICheckAllDirections _linesMatchComboChecker;
 
-    // Aoiti.Pathfinding.PathfinderAoitiSpontaneous<Vector2Int> _pathfinder;
+    // Pathfinder<Vector2Int> _pathfinder;
 
     public void Init( Vector2Int size )
     {
@@ -35,10 +34,13 @@ public class Board : MonoBehaviour
 
         _cellGrid = _cellCreator.CreateBoard( _clickManager,  size );
 
-        _positionsManager = new PositionManager( _itemGrid );
-        _linesMatchComboChecker = new LinesMatchComboChecker( _positionsManager, Direction.AllAxes, 3 );
+        _positionsManager = new PositionManager( _itemGrid, _cellGrid );
+        _linesMatchComboChecker = new DebugMatchChecker( _positionsManager, Direction.AllAxes, 3 );
 
-        // PathfinderAoitiSpontaneous<Vector2Int> pathfinder = new PathfinderAoitiSpontaneous<Vector2Int>( GetManhattanDistance, GetConnectedNodesAndStepCosts );
+        // _linesMatchComboChecker = new LinesMatchComboCheckerNotDir( _positionsManager, Direction.AllAxes, 3 );
+        // _linesMatchComboChecker = new LinesMatchComboChecker( _positionsManager, Direction.AllAxes, 3 );
+
+        // Pathfinder<Vector2Int> pathfinder = new Pathfinder<Vector2Int>( GetManhattanDistance, GetConnectedNodesAndStepCosts );
 
         //_cellCreatorTransform = cellCreatorTransform; //не нужно её тут хранить. мб еще будет отступ. должен ли board Знать о нём?
     }
@@ -103,7 +105,7 @@ public class Board : MonoBehaviour
 
         _clickManager.DeSelectBallInTile( itemHolder );
 
-        //_linesMatchComboChecker.CheckAllDirectionsAtPoint( to );
+        _linesMatchComboChecker.CheckAllDirectionsAtPoint( to );
 
         OnItemMove();
 

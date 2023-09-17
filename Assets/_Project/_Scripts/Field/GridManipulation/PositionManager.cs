@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Field.Cells;
 using Field.ItemGeneration.FieldItem;
 using UnityEngine;
 
@@ -7,11 +8,13 @@ namespace Field.GridManipulation
 public class PositionManager //<T>
 {
     // readonly IReadOnlyList<T> _grid;
-    readonly Grid<Ball> _grid;
+    readonly Grid<Ball> _itemGrid;
+    readonly Grid<Cell> _cellGrid;
 
-    public PositionManager( Grid<Ball> grid )
+    public PositionManager( Grid<Ball> itemGrid, Grid<Cell> cellGrid )
     {
-        _grid = grid;
+        _itemGrid = itemGrid;
+        _cellGrid = cellGrid;
     }
 
 
@@ -19,15 +22,15 @@ public class PositionManager //<T>
     {
         List<Vector2Int> freeCellIndexes = new List<Vector2Int>(); //мб HashSet?
 
-        for ( int i = 0; i < _grid.Cells.Length; i++ )
+        for ( int i = 0; i < _itemGrid.Cells.Length; i++ )
         {
-            if ( _grid.Cells[ i ] != null )
+            if ( _itemGrid.Cells[ i ] != null )
                 continue;
 
             //if ( ForbiddenToSpawn.Contains( _itemList[ i ] ) )
             //    continue;
 
-            freeCellIndexes.Add( _grid.IndexToCoords( i ) ); //изначально отсюда тащил int по всей цепочке
+            freeCellIndexes.Add( _itemGrid.IndexToCoords( i ) ); //изначально отсюда тащил int по всей цепочке
         }
 
         return freeCellIndexes;
@@ -70,7 +73,7 @@ public class PositionManager //<T>
         //мб тупо в структру и в List<NodeWithCost>. и в неё GetHeuristicDistance,
         Dictionary<Vector2Int, float> adjacentNodesAndCosts = new Dictionary<Vector2Int, float>();
 
-        foreach ( Direction side in Direction.Sides )
+        foreach ( Direction side in Direction.Orthogonal )
         {
             adjacentNodesAndCosts.Add( item + side, 1f );
         }
@@ -79,20 +82,39 @@ public class PositionManager //<T>
     }
 
 
+    public bool IsNeighborRipedAndSameShapeNew( Vector2Int origin, Vector2Int shift, out Vector2Int neighbourCoords )
+    {
+        neighbourCoords = origin + shift;
+        Debug.Log( $"<color=cyan> шар в: {origin}, проверка соседа: {neighbourCoords} </color>" );
+        bool areCoordinatesInBounds = IsInBounds( neighbourCoords );
+
+        Ball movedBall = _itemGrid[ origin ]; //этот уж точно Riped, иначе бы не переместился
+        Ball neighbourBall = _itemGrid[ neighbourCoords ];
+        if ( !movedBall || !neighbourBall )
+            return false;
+
+        bool areBothRiped = movedBall.Riped && neighbourBall.Riped;
+
+        return areCoordinatesInBounds && areBothRiped && AreCellsHasSameShape( movedBall, neighbourBall );
+    }
     public bool IsNeighborRipedAndSameShape( Vector2Int origin, Direction shift, out Vector2Int neighbourCoords )
     {
         neighbourCoords = origin + shift;
         Debug.Log( $"<color=cyan> шар в: {origin}, проверка соседа: {neighbourCoords} </color>" );
         bool areCoordinatesInBounds = IsInBounds( neighbourCoords );
 
-        Ball ball = _grid[ origin ]; //этот уж точно Riped, иначе бы не переместился
-        Ball ball2 = _grid[ neighbourCoords ];
-        bool areBothRiped = ball.Riped && ball2.Riped;
+        Ball movedBall = _itemGrid[ origin ]; //этот уж точно Riped, иначе бы не переместился
+        Ball neighbourBall = _itemGrid[ neighbourCoords ];
+        if ( !movedBall || !neighbourBall )
+            return false;
 
-        return areCoordinatesInBounds && areBothRiped && AreCellsHasSameShape( ball, ball2 );
+        bool areBothRiped = movedBall.Riped && neighbourBall.Riped;
+
+        return areCoordinatesInBounds && areBothRiped && AreCellsHasSameShape( movedBall, neighbourBall );
     }
 
-    public bool IsInBounds( Vector2Int coords ) => _grid.IsInBounds( coords );
+
+    public bool IsInBounds( Vector2Int coords ) => _itemGrid.IsInBounds( coords );
 
     bool AreCellsHasSameShape( Ball ball, Ball ball2 )
     {
@@ -100,6 +122,11 @@ public class PositionManager //<T>
             return true;
 
         return false;
+    }
+
+    public Cell GetNeighbourCell( Vector2Int startingPosition, Vector2Int axis )
+    {
+        return _cellGrid.Get( startingPosition + axis );
     }
 }
 }

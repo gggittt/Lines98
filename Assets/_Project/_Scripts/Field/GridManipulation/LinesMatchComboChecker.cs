@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace Field.GridManipulation
 {
-public class LinesMatchComboChecker
+//naming = в название отразить что он diagonalInclude
+public class LinesMatchComboChecker : ICheckAllDirections
 {
     // readonly Func<T, List<T>> _getNeighborByDirection;
     readonly PositionManager _positionManager;
-    Direction[][] _axesToCheck;
+    readonly Direction[][] _axesToCheck;
 
     int _minLineSize;
 
@@ -40,10 +42,10 @@ public class LinesMatchComboChecker
             allSuitableItems.UnionWith( bothLineHalves );
         }
 
-        Log( "match info: " , (IEnumerable<object>) allSuitableItems );
+        Log( "match info: ", allSuitableItems );
     }
 
-    void Log( string msg, IEnumerable<object> sequence )
+    void Log( string msg, IEnumerable sequence )
     {
         string result = msg;
         foreach ( object obj in sequence )
@@ -51,23 +53,27 @@ public class LinesMatchComboChecker
             result += obj + ", ";
         }
 
-        Debug.Log($"<color=cyan> {result} </color>");
+        Debug.Log( $"<color=cyan> {result} </color>" );
     }
 
     List<Vector2Int> GetItemsInLineOfSameShape( Direction[] axis, Vector2Int coords )
     {
         List<Vector2Int> bothLineHalves = new List<Vector2Int>();
 
-        foreach ( Direction direction in axis ) //2 раза
+        foreach ( Direction direction in axis ) //в 2 противоположные стороны
         {
-            Debug.Log($"<color=green> для shift: {direction} </color>");
+            Debug.Log( $"<color=green> для shift: {direction} </color>" );
 
             if ( _positionManager.IsInBounds( coords + direction ) == false )
+            {
+                Debug.Log($"<color=orange>out of Bounds: {coords + direction} </color>");
+
                 break; //если в рекурсии, то выйдет из 1 цикла ведь?
+            }
 
-            CheckNeighbour( coords );
+            CheckNeighbourOf( coords );
 
-            void CheckNeighbour( Vector2Int origin )
+            void CheckNeighbourOf( Vector2Int origin )
             {
                 bool isNeighborRipedAndSameShape = _positionManager.IsNeighborRipedAndSameShape( origin, direction, out Vector2Int neighbour ); //ripped //1 сосед, в сторону shift
                 //внутри может throw если не тот индекс
@@ -76,7 +82,7 @@ public class LinesMatchComboChecker
                     return; //или break //или break для While/foreach
 
                 bothLineHalves.Add( neighbour );
-                CheckNeighbour( neighbour );
+                CheckNeighbourOf( neighbour );
             }
         }
 

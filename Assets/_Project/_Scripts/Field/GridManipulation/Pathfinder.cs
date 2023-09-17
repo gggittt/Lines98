@@ -1,16 +1,9 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: Aoiti.Pathfinding.Pathfinder`1
-// Assembly: Pathfinding, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: ACA93B6B-4A4F-4F5F-A994-F5907189AFD5
-// Assembly location: D:\5 Unity proj\1 Unity_Genres\2d = Sandbox test\Assets\Aoiti\Plugins\Pathfinding.dll
-
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Aoiti.Pathfinding
-{
+
 struct NodeValues
 {
     public float G; //true distance from origin
@@ -25,7 +18,7 @@ public struct Path
     public IList Value; //ранее List<T>. сделать тем типом, который нужен запрашивающему классу
 }
 
-public class PathfinderAoitiSpontaneous<T>
+public class Pathfinder<T>
 {
 
     //https://youtu.be/P7sFfFLH4iM?t=120
@@ -34,7 +27,7 @@ public class PathfinderAoitiSpontaneous<T>
     readonly Func<T, Dictionary<T, float>> _getConnectedNodesAndStepCosts; //именно connected, т.к. связи мб не только с neighbours
     //пока нужна только: Func<T, T> _walkableNeighbours; //пока stepCost не нужен?
 
-    public PathfinderAoitiSpontaneous( Func<T, T, float> getHeuristicDistance,
+    public Pathfinder( Func<T, T, float> getHeuristicDistance,
         Func<T, Dictionary<T, float>> getConnectedNodesAndStepCosts )
     {
         _getHeuristicDistance = getHeuristicDistance;
@@ -144,5 +137,4 @@ public class PathfinderAoitiSpontaneous<T>
     }
 
 
-}
 }

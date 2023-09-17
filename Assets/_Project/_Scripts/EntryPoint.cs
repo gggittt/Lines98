@@ -26,12 +26,14 @@ public class EntryPoint : MonoBehaviour
         }
         else
         {
-            TryCreateBalls( 12 );
+            TryCreateBalls( _gameData.ballPerTurn );
         }
 
 
-        var a = Direction.North + Vector2Int.one;
+        var a = Direction.North + Vector2Int.zero;//сначала каст, а потом unity тупо складывает 2 вектора = итог норм
+        var b = Vector2Int.zero + Direction.North; //мой operator +. выдаёт итог (0, 0), ош. //была ош * вместо +: operator +(...(pos.y * dir.Y );
         Debug.Log($"<color=cyan> {a} </color>");
+        Debug.Log($"<color=cyan> {b} </color>");
 
 
         var arr = new[] { 1, 2, 3, 4 };
@@ -76,20 +78,7 @@ public class EntryPoint : MonoBehaviour
     }
 
 
-    void TestLogs( Grid<Cell> cellGrid )
-    {
-        int[] arr = { 1, 2, 3 };
-        IEnumerable<int> ie = arr;
-        ICollection<int> coll = arr;
-        IList<int> list = arr;
 
-        Cell cell = cellGrid.Cells[ 4 ];
-        Debug.Log( ie );
-        Debug.Log( list.Count );
-        //Debug.Log( "cell.HasItem " + cell.HasItem, cell );
-        Debug.Log( this, this );
-
-    }
 
 
 }
