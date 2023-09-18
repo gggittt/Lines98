@@ -1,5 +1,5 @@
-| [Game rules](#Game-rules) | [Game rules](#Game rules) | [TODO](#TODO) | [Refactoring](#Refactoring) | [My codestyle](#My-codestyle) |[Naming](#Naming) |
-|-------------------------------------|-----------------------|---------------------|-------------------------|-----------------------|
+| [Game rules](#Game-rules) | [TODO](#TODO) | [Refactoring](#Refactoring) | [My codestyle](#My-codestyle) |[Naming](#Naming) |
+|---------------------------|---------------|-----------------------------|-------------------------------|
 
 # Lines98
 
