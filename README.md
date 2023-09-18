@@ -9,6 +9,7 @@ Unity version - 2019.4.17f1. Потому что старые версии бы�
 
 Комменты в коде не одобряю, и пишу только на время разработки, ближе к концу всё почищу. Как и неиспользуемые классы и методы для отладки.
 
+
 ## Game rules
 [Play Online (version with small orbs)](https://www.min2win.ru/gms/834.html)
 
@@ -24,6 +25,7 @@ Unity version - 2019.4.17f1. Потому что старые версии бы�
 
 ## TODO
 - translate READMI.md to english
+- mind map classes connections. link to draw.io or picture
 
 - Animations
 - Pool Object
