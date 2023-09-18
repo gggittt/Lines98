@@ -22,5 +22,4 @@ public class DebugMatchChecker : ICheckAllDirections
     }
 }
 
-class Typeddd{}
 

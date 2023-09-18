@@ -55,7 +55,6 @@ public class ClickManager //: MonoBehaviour //ClickHandler
 
     public void DeSelectBallInTile( Cell clickedTile )
     {
-
         _selected = null;
     }
 

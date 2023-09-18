@@ -16,7 +16,7 @@ public class Board : MonoBehaviour
     public List<Vector2Int> EmptyCellsIndexes => _positionsManager.GetEmptyCellsIndexes();
     public Vector2Int GridSize => new Vector2Int( _itemGrid.Width, _itemGrid.Height );
 
-    WaveManager _waveManager = new WaveManager();
+
 
     Grid<Ball> _itemGrid;
     Grid<Cell> _cellGrid;
@@ -94,8 +94,6 @@ public class Board : MonoBehaviour
 
     public void TryMoveItem( Cell itemHolder, Vector2Int to )
     {
-        if ( IsPathBlocked( itemHolder.LocalCoord, to ) )
-            return;
         //bool pathExist = _waveManager.TryPavePath( from: _selectedCell.LocalCoord, to, out _ );
 
         //bool isLineComplete = _ballMatrix.MoveBigAndSmallBalls( _selectedCell.LocalCoord, bigBallNewCoord: newCoord );
@@ -117,20 +115,7 @@ public class Board : MonoBehaviour
     }
 
 
-    bool IsPathBlocked( Vector2Int from, Vector2Int to )
-    {
-        bool pathExist = _waveManager.TryPavePath( from, to, out _ );
 
-        if ( pathExist )
-        {
-            //+ можно нанести урон?
-            return false;
-        }
-
-        Debug.Log( $"<color=cyan>no path from {from} to {to}. </color>" );
-
-        return true;
-    }
 
 
     public List<Vector2Int> ReserveCells( )
@@ -156,17 +141,5 @@ public class Board : MonoBehaviour
         return null;
     }
 
-
-
-
-    public bool IsInBounds( Vector2Int coords )
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public bool IsSameType( Vector2Int origin, object neighbour )
-    {
-        throw new System.NotImplementedException();
-    }
 }
 }

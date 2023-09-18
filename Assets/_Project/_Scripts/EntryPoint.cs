@@ -35,20 +35,6 @@ public class EntryPoint : MonoBehaviour
         Debug.Log($"<color=cyan> {a} </color>");
         Debug.Log($"<color=cyan> {b} </color>");
 
-
-        var arr = new[] { 1, 2, 3, 4 };
-        for ( int i = 0; i < 4; i++ )
-        {
-            var variable = i;
-            // arr[ i ].ToString() //1, 2, 3, 4
-            //{nameof( variable ) //"variable"
-
-            // Debug.Log( $"<color=cyan> {nameof( arr[ i ] )} </color>" );
-        }
-
-        //TryCreateBalls( _gameData.startBallsAmount );
-
-        //TestLogs( cellGrid );
     }
 
     void TryCreateBalls( int ballsToCreateAmount )

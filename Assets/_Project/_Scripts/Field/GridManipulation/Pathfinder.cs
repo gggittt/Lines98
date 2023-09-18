@@ -18,34 +18,34 @@ public struct Path
     public IList Value; //ранее List<T>. сделать тем типом, который нужен запрашивающему классу
 }
 
-public class Pathfinder<T>
+public class Pathfinder<TNode>
 {
 
     //https://youtu.be/P7sFfFLH4iM?t=120
     readonly int _calculatorPatience = 9_999;
-    readonly Func<T, T, float> _getHeuristicDistance;
-    readonly Func<T, Dictionary<T, float>> _getConnectedNodesAndStepCosts; //именно connected, т.к. связи мб не только с neighbours
+    readonly Func<TNode, TNode, float> _getHeuristicDistance;
+    readonly Func<TNode, Dictionary<TNode, float>> _getConnectedNodesAndStepCosts; //именно connected, т.к. связи мб не только с neighbours
     //пока нужна только: Func<T, T> _walkableNeighbours; //пока stepCost не нужен?
 
-    public Pathfinder( Func<T, T, float> getHeuristicDistance,
-        Func<T, Dictionary<T, float>> getConnectedNodesAndStepCosts )
+    public Pathfinder( Func<TNode, TNode, float> getHeuristicDistance,
+        Func<TNode, Dictionary<TNode, float>> getConnectedNodesAndStepCosts )
     {
         _getHeuristicDistance = getHeuristicDistance;
         _getConnectedNodesAndStepCosts = getConnectedNodesAndStepCosts;
     }
 
-    public Path GenerateAStarPath( T startNode, T endNode )
+    public Path GenerateAStarPath( TNode startNode, TNode endNode )
     {
 
         float startToEndDistance = _getHeuristicDistance( startNode, endNode );
         int calculatorPatience = _calculatorPatience;
 
-        HashSet<T> closedList = new HashSet<T>();
+        HashSet<TNode> closedList = new HashSet<TNode>();
 
-        Dictionary<T, NodeValues> openList = new Dictionary<T, NodeValues>();
+        Dictionary<TNode, NodeValues> openList = new Dictionary<TNode, NodeValues>();
         openList.Add( startNode, new NodeValues { G = 0.0f, HeuristicToEnd = startToEndDistance, FinalCost = startToEndDistance } );
 
-        Dictionary<T, T> directions = new Dictionary<T, T>(); //вместо этого - хранить currentNode.ParentNode. но тут node просто T. мб обязать where T : INode -> Parent { get; }   float GetDistance( otherCell );
+        Dictionary<TNode, TNode> directions = new Dictionary<TNode, TNode>(); //вместо этого - хранить currentNode.ParentNode. но тут node просто T. мб обязать where T : INode -> Parent { get; }   float GetDistance( otherCell );
 
         while ( calculatorPatience > 0 ) //todo удалить? нет, можно только заменить на openList.Any()
         {
@@ -55,8 +55,8 @@ public class Pathfinder<T>
 
             //T currentNode = openList.Aggregate( ( l, r )=> l.Value.F >= (double) r.Value.F ? r : l ).Key; //нечитаемо
 
-            KeyValuePair<T, NodeValues> valuePair = openList.Aggregate( FindBestPriority );
-            T currentNode = valuePair.Key;
+            KeyValuePair<TNode, NodeValues> valuePair = openList.Aggregate( FindBestPriority );
+            TNode currentNode = valuePair.Key;
 
 
             openList.Remove( currentNode );
@@ -70,12 +70,12 @@ public class Pathfinder<T>
             }
 
             NodeValues nodeValues = openList[ currentNode ];
-            foreach ( KeyValuePair<T, float> nodeAndDistance in _getConnectedNodesAndStepCosts( currentNode ) )
+            foreach ( KeyValuePair<TNode, float> nodeAndDistance in _getConnectedNodesAndStepCosts( currentNode ) )
             {
-                T neighbour = nodeAndDistance.Key;
+                TNode neighbour = nodeAndDistance.Key;
                 float distanceCurrentToNeighbour = nodeAndDistance.Value;
 
-                if ( closedList.Contains<T>( neighbour ) )
+                if ( closedList.Contains<TNode>( neighbour ) )
                     continue;
 
 
@@ -103,9 +103,9 @@ public class Pathfinder<T>
 
         return new Path { };
     }
-    static KeyValuePair<T, NodeValues> FindBestPriority( KeyValuePair<T, NodeValues> firstPair, KeyValuePair<T, NodeValues> secondPair )
+    static KeyValuePair<TNode, NodeValues> FindBestPriority( KeyValuePair<TNode, NodeValues> firstPair, KeyValuePair<TNode, NodeValues> secondPair )
     {
-        KeyValuePair<T, NodeValues> mostSuitable;
+        KeyValuePair<TNode, NodeValues> mostSuitable;
         //в двух других также и
 
         bool secondWayShorter = firstPair.Value.FinalCost >= (double) secondPair.Value.FinalCost;
@@ -122,11 +122,11 @@ public class Pathfinder<T>
         return mostSuitable;
     }
 
-    Path RetracePath( T startNode, T currentNode, Dictionary<T, T> directions )
+    Path RetracePath( TNode startNode, TNode currentNode, Dictionary<TNode, TNode> directions )
     {
-        List<T> successfulPath = new List<T>();
+        List<TNode> successfulPath = new List<TNode>();
 
-        for ( T tracebackStep = currentNode; !tracebackStep.Equals( startNode ); tracebackStep = directions[ tracebackStep ] ) //Трассировка
+        for ( TNode tracebackStep = currentNode; !tracebackStep.Equals( startNode ); tracebackStep = directions[ tracebackStep ] ) //Трассировка
         {
             successfulPath.Add( tracebackStep );
         }

@@ -5,20 +5,15 @@ using UnityEngine;
 
 namespace Field
 {
-
 public class Grid<TCell>
 {
     public TCell[] Cells { get; }
     public int Width { get; }
     public int Height { get; }
 
-    //public Grid( int width, int height, InitFunction init )
-    public delegate TCell InitFunction( int x, int y ); // замена Func < int, int, TCell > //подписать их на событие тут?
 
     public delegate bool Filter( TCell cell );
 
-    // Func<bool, TCell> filterForeEachItem;
-    public delegate bool FilterAtCoords( Vector2Int coords );
 
     public Grid( int width, int height )
     {
