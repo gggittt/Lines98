@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Extensions;
 using UnityEngine;
 
 namespace Field.GridManipulation
@@ -12,12 +13,10 @@ public class LinesMatchComboChecker : ICheckAllDirections
     // readonly Func<T, List<T>> _getNeighborByDirection;
     readonly PositionManager _positionManager;
     readonly Direction[][] _axesToCheck;
+    readonly int _minLineSize;
 
-    int _minLineSize;
 
-    // readonly Board _board; //мб сюда не board а более узкофункциональный класс
-
-    // public LinesMatchComboChecker( Func<T, List<T>> getNeighborByDirection, Direction[][] axesToCheck, Board board , int minLineSize = 5 )
+    // public LinesMatchComboChecker( Func<T, List<T>> getNeighborByDirection, Direction[][] axesToCheck , int minLineSize = 5 )
     public LinesMatchComboChecker( PositionManager positionManager, Direction[][] axesToCheck, int minLineSize )
     {
         _positionManager = positionManager;
@@ -26,67 +25,61 @@ public class LinesMatchComboChecker : ICheckAllDirections
     }
 
 
-    public void CheckAllDirectionsAtPoint( Vector2Int startingPosition )
+    public MatchInfo CheckAllDirectionsAtPoint( Vector2Int startingPosition )
     {
-        Vector2Int center = startingPosition;
-        HashSet<Vector2Int> allSuitableItems = new HashSet<Vector2Int>();
+        // HashSet<Vector2Int> allSuitableItems = new HashSet<Vector2Int>();
 
-        foreach ( Direction[] axis in _axesToCheck ) //для 4 направлений
+        MatchInfo matchInfo = new MatchInfo(startingPosition);
+
+        //fixme ош, нужно именно попарно сравнивать! а тут 8 сразу //но для начала хотя бы проверю outOfBounds
+        foreach ( Direction[] axis in _axesToCheck )
         {
-            List<Vector2Int> bothLineHalves = GetItemsInLineOfSameShape( axis, center ); //итого макс 4*2 штуки
+            // List<Vector2Int> bothLineHalves = GetItemsInLineOfSameShapeNew( axis, center );
+            HashSet<Vector2Int> firstPart = TryGetNeighboursOfConsistentlySameShape( axis[ 0 ], startingPosition );
+            HashSet<Vector2Int> secondPart = TryGetNeighboursOfConsistentlySameShape( axis[ 1 ], startingPosition );
+            HashSet<Vector2Int> bothLineParts = firstPart.CombineWith( secondPart );
 
-            bothLineHalves.Add( startingPosition );
-            if ( bothLineHalves.Count < _minLineSize )
+            if ( bothLineParts == null )
                 continue;
 
-            allSuitableItems.UnionWith( bothLineHalves );
+            bothLineParts.Add( startingPosition );
+            if ( bothLineParts.Count < _minLineSize ) //мб проверять уже внутри match? будут лишние вызовы
+                continue;
+
+            matchInfo.Add( bothLineParts );
+            // allSuitableItems.UnionWith( bothLineParts );
         }
 
-        Log( "match info: ", allSuitableItems );
+
+        Debug.Log( $"{matchInfo}" );
+
+
+        return matchInfo;
     }
 
-    void Log( string msg, IEnumerable sequence )
+    //sequentially consecutively serially подряд,серийно
+    HashSet<Vector2Int> TryGetNeighboursOfConsistentlySameShape( Direction direction, Vector2Int coords )
     {
-        string result = msg;
-        foreach ( object obj in sequence )
-        {
-            result += obj + ", ";
-        }
+        HashSet<Vector2Int> suitableInHalfLine = new HashSet<Vector2Int>();
 
-        Debug.Log( $"<color=cyan> {result} </color>" );
+        CheckNeighbour( coords, direction, suitableInHalfLine );
+
+        return suitableInHalfLine;
     }
 
-    List<Vector2Int> GetItemsInLineOfSameShape( Direction[] axis, Vector2Int coords )
+    void CheckNeighbour( Vector2Int origin, Direction direction, ICollection<Vector2Int> suitableLine )
     {
-        List<Vector2Int> bothLineHalves = new List<Vector2Int>();
+        bool isNeighborRipedAndSameShape = _positionManager.IsNeighborRipedAndSameShapeNew( origin, direction, out Vector2Int neighbour ); //ripped //1 сосед, в сторону shift
 
-        foreach ( Direction direction in axis ) //в 2 противоположные стороны
-        {
-            Debug.Log( $"<color=green> для shift: {direction} </color>" );
 
-            if ( _positionManager.IsInBounds( coords + direction ) == false )
-            {
-                Debug.Log($"<color=orange>out of Bounds: {coords + direction} </color>");
+        if ( isNeighborRipedAndSameShape == false )
+            return; //или break для While/foreach
 
-                break; //если в рекурсии, то выйдет из 1 цикла ведь?
-            }
+        Debug.Log( $"<color=gray> тот же shape в {neighbour} </color>" );
 
-            CheckNeighbourOf( coords );
 
-            void CheckNeighbourOf( Vector2Int origin )
-            {
-                bool isNeighborRipedAndSameShape = _positionManager.IsNeighborRipedAndSameShape( origin, direction, out Vector2Int neighbour ); //ripped //1 сосед, в сторону shift
-                //внутри может throw если не тот индекс
-
-                if ( isNeighborRipedAndSameShape == false )
-                    return; //или break //или break для While/foreach
-
-                bothLineHalves.Add( neighbour );
-                CheckNeighbourOf( neighbour );
-            }
-        }
-
-        return bothLineHalves;
+        suitableLine.Add( neighbour );
+        CheckNeighbour( neighbour, direction, suitableLine );
     }
 
 

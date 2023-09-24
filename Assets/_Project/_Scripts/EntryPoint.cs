@@ -18,6 +18,9 @@ public class EntryPoint : MonoBehaviour
         _board.Init( size );
         _board.ItemMoved += LaunchNewTurn;
 
+        var pos = new Vector2Int( 3, 3 ) + Direction.Left;
+        Debug.Log($"<color=cyan> {pos} </color>");
+
 
         _itemFactory.Init( _board );
         if ( _debug )
@@ -30,8 +33,8 @@ public class EntryPoint : MonoBehaviour
         }
 
 
-        var a = Direction.North + Vector2Int.zero;//сначала каст, а потом unity тупо складывает 2 вектора = итог норм
-        var b = Vector2Int.zero + Direction.North; //мой operator +. выдаёт итог (0, 0), ош. //была ош * вместо +: operator +(...(pos.y * dir.Y );
+        var a = Direction.Up + Vector2Int.zero;//сначала каст, а потом unity тупо складывает 2 вектора = итог норм
+        var b = Vector2Int.zero + Direction.Up; //мой operator +. выдаёт итог (0, 0), ош. //была ош * вместо +: operator +(...(pos.y * dir.Y );
         Debug.Log($"<color=cyan> {a} </color>");
         Debug.Log($"<color=cyan> {b} </color>");
 
@@ -62,9 +65,6 @@ public class EntryPoint : MonoBehaviour
     {
         return ballsToCreate > emptySpacesAmount;
     }
-
-
-
 
 
 }

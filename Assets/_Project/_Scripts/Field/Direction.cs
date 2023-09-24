@@ -4,30 +4,32 @@ public class Direction
 {
     //OttoBotCode https://youtu.be/KuAsKRn9XD0?t=521
 
-    //https://docs.unity3d.com/ScriptReference/UIElements.NavigationMoveEvent.Direction.html
-    //или лучше up, down, left? стогда странно DownLeft
-    public static readonly Direction North = new Direction( 0, 1 ); //у него -1, и перепутаны x-y
-    public static readonly Direction East = new Direction( - 1, 0 );
-    public static readonly Direction South = new Direction( 0, - 1 );
-    public static readonly Direction West = new Direction( 1, 0 );
-    public static readonly Direction NorthEast = North + East; //у этих длина ветора больше в 1.4 раза
-    public static readonly Direction SouthEast = South + East;
-    public static readonly Direction SouthWest = South + West;
-    public static readonly Direction NorthWest = North + West;
+    //https://docs.unity3d.com/ScriptReference/UIElements.NavigationMoveEvent.Direction.html мб назвать Shift
+
+    const int fromCartesianYCoeficient = - 1; //Descartes
+    public static readonly Direction Up = new Direction( 0, 1 ) * fromCartesianYCoeficient;
+    public static readonly Direction Right = new Direction( 1, 0 );
+    public static readonly Direction Down = new Direction( 0, - 1 ) * fromCartesianYCoeficient;
+    public static readonly Direction Left = new Direction( - 1, 0 );
+
+    public static readonly Direction UpRight = Up + Right; //у этих длина ветора больше в 1.4 раза
+    public static readonly Direction DownRight = Down + Right;
+    public static readonly Direction DownLeft = Down + Left;
+    public static readonly Direction UpLeft = Up + Left;
 
     public static readonly Direction[] Orthogonal =
-    { North, East, South, West };
+    { Up, Right, Down, Left };
     public static readonly Direction[] Diagonals =
-    { NorthEast, SouthEast, SouthWest, NorthWest };
+    { UpRight, DownRight, DownLeft, UpLeft };
 
     public static readonly Direction[] Vertical =
-    { North, South };
+    { Up, Down };
     public static readonly Direction[] Horizontal =
-    { West, East };
+    { Left, Right };
     public static readonly Direction[] DiagonalFromNorthWest =
-    { NorthWest, SouthEast };
+    { UpLeft, DownRight };
     public static readonly Direction[] DiagonalFromNorthEast =
-    { NorthEast, SouthWest };
+    { UpRight, DownLeft };
 
     // public List<List<Direction>> AllAxes => new List<List<Direction>>().AddRange();
 
@@ -35,32 +37,25 @@ public class Direction
     { Vertical, Horizontal, DiagonalFromNorthWest, DiagonalFromNorthEast, };
 
     public static readonly Direction[,] AllAxes2 =
-    { { North, South },
-      { East, West, }
+    { { Up, Down },
+      { Right, Left, }
      ,
-      { NorthWest, SouthEast }
+      { UpLeft, DownRight }
      ,
-      { NorthEast, SouthWest } };
+      { UpRight, DownLeft } };
 
     public static readonly Direction[,] OrthogonalAxes =
-    { { North, South },
-      { East, West, } }; //straight
+    { { Up, Down },
+      { Right, Left, } }; //straight
     public static readonly Direction[,] DiagonalsAxes =
-    { { NorthWest, SouthEast },
-      { NorthEast, SouthWest } };
+    { { UpLeft, DownRight },
+      { UpRight, DownLeft } };
 
 
     static void ArrTest( )
     {
-        foreach ( Direction direction in AllAxes2 ) //Direction[,]
-        {
-
-        }
-
-        foreach ( Direction[] direction in AllAxes ) //Direction[][]
-        {
-
-        }
+        // foreach ( Direction direction in AllAxes2 ) //Direction[,]
+        // foreach ( Direction[] direction in AllAxes ) //Direction[][]
     }
 
     // tarodev in Pathfinding наклонный ромб IsoNode : NodeBase static readonly List<Vector2> Isometric Dirs = { new Vector2( 1, 0.5f ), new Vector2( - 1, 0.5f ), new Vector2( 1, - 0.5f ), new Vector2( - 1, - 0.5f ) };
@@ -119,22 +114,22 @@ public class Direction
     public override string ToString( )
     {
         string result = "";
-        if ( this == North )
-            result = nameof( North );
-        else if ( this == East )
-            result = nameof( East );
-        else if ( this == South )
-            result = nameof( South );
-        else if ( this == West )
-            result = nameof( West );
-        else if ( this == NorthEast )
-            result = nameof( NorthEast );
-        else if ( this == SouthEast )
-            result = nameof( SouthEast );
-        else if ( this == SouthWest )
-            result = nameof( SouthWest );
-        else if ( this == NorthWest )
-            result = nameof( NorthWest );
+        if ( this == Up )
+            result = nameof( Up );
+        else if ( this == Right )
+            result = nameof( Right );
+        else if ( this == Down )
+            result = nameof( Down );
+        else if ( this == Left )
+            result = nameof( Left );
+        else if ( this == UpRight )
+            result = nameof( UpRight );
+        else if ( this == DownRight )
+            result = nameof( DownRight );
+        else if ( this == DownLeft )
+            result = nameof( DownLeft );
+        else if ( this == UpLeft )
+            result = nameof( UpLeft );
 
         return result;
         // return $"dir: ({X}, {Y})";
@@ -146,26 +141,4 @@ public class Direction
         //Vector2Int a = Vector2Int.zero + Direction.NorthEast * 4;
 
     }
-}
-
-public class Shifts
-{
-    public static readonly Vector2Int[] All =
-    { new Vector2Int( - 1, - 1 )
-    , new Vector2Int( 0, - 1 )
-    , new Vector2Int( 1, - 1 )
-    , new Vector2Int( - 1, 0 )
-    , new Vector2Int( 1, 0 )
-    , new Vector2Int( - 1, 1 )
-    , new Vector2Int( 0, 1 )
-    , new Vector2Int( 1, 1 ), };
-
-}
-public class Creature
-{
-    readonly int[] _stats = new int[3]; //тогда уж Dictionary
-
-    public ref int Strength => ref _stats[ strengthIndex ];
-    const int strengthIndex = 0;
-
 }

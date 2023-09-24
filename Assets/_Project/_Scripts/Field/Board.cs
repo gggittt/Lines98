@@ -28,17 +28,16 @@ public class Board : MonoBehaviour
 
     public void Init( Vector2Int size )
     {
-        _itemGrid = new Grid<Ball>(  size );
+        _itemGrid = new Grid<Ball>( size );
 
         _clickManager = new ClickManager( this );
 
-        _cellGrid = _cellCreator.CreateBoard( _clickManager,  size );
+        _cellGrid = _cellCreator.CreateBoard( _clickManager, size );
 
         _positionsManager = new PositionManager( _itemGrid, _cellGrid );
-        _linesMatchComboChecker = new DebugMatchChecker( _positionsManager, Direction.AllAxes, 3 );
 
         // _linesMatchComboChecker = new LinesMatchComboCheckerNotDir( _positionsManager, Direction.AllAxes, 3 );
-        // _linesMatchComboChecker = new LinesMatchComboChecker( _positionsManager, Direction.AllAxes, 3 );
+        _linesMatchComboChecker = new LinesMatchComboChecker( _positionsManager, Direction.AllAxes, 3 );
 
         // Pathfinder<Vector2Int> pathfinder = new Pathfinder<Vector2Int>( GetManhattanDistance, GetConnectedNodesAndStepCosts );
 
@@ -103,7 +102,8 @@ public class Board : MonoBehaviour
 
         _clickManager.DeSelectBallInTile( itemHolder );
 
-        _linesMatchComboChecker.CheckAllDirectionsAtPoint( to );
+        MatchInfo matched = _linesMatchComboChecker.CheckAllDirectionsAtPoint( to );
+        //MatchReaper.Reap( matched );
 
         OnItemMove();
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Field.Cells;
 using Field.ItemGeneration.FieldItem;
 using UnityEngine;
@@ -82,20 +83,30 @@ public class PositionManager //<T>
     }
 
 
-    public bool IsNeighborRipedAndSameShapeNew( Vector2Int origin, Vector2Int shift, out Vector2Int neighbourCoords )
+    public bool IsNeighborRipedAndSameShapeNew( Vector2Int origin, Direction shift, out Vector2Int neighbourCoords )
     {
         neighbourCoords = origin + shift;
-        Debug.Log( $"<color=cyan> шар в: {origin}, проверка соседа: {neighbourCoords} </color>" );
+        Debug.Log( $"<color=cyan> checking {neighbourCoords} = {shift} from {origin} </color>" );
         bool areCoordinatesInBounds = IsInBounds( neighbourCoords );
+        if ( areCoordinatesInBounds == false )
+        {
+            return false;
+        }
 
         Ball movedBall = _itemGrid[ origin ]; //этот уж точно Riped, иначе бы не переместился
         Ball neighbourBall = _itemGrid[ neighbourCoords ];
-        if ( !movedBall || !neighbourBall )
+
+        if ( !movedBall )
+            throw new Exception( "no moved ball" );
+
+        if ( !neighbourBall )
+        {
             return false;
+        }
 
         bool areBothRiped = movedBall.Riped && neighbourBall.Riped;
 
-        return areCoordinatesInBounds && areBothRiped && AreCellsHasSameShape( movedBall, neighbourBall );
+        return areBothRiped && AreCellsHasSameShape( movedBall, neighbourBall );
     }
     public bool IsNeighborRipedAndSameShape( Vector2Int origin, Direction shift, out Vector2Int neighbourCoords )
     {
@@ -124,9 +135,16 @@ public class PositionManager //<T>
         return false;
     }
 
-    public Cell GetNeighbourCell( Vector2Int startingPosition, Vector2Int axis )
+    public Cell TryGetNeighbourCell( Vector2Int startingPosition, Vector2Int axis )
     {
-        return _cellGrid.Get( startingPosition + axis );
+        Vector2Int position = startingPosition + axis;
+
+        if ( IsInBounds( position ) )
+        {
+            return _cellGrid.Get( position );
+        }
+        return null;
+
     }
 }
 }
