@@ -29,12 +29,12 @@ public class CellCreator : MonoBehaviour
         void CreateTile( int x, int y )
         {
             Cell cell = Instantiate( _cellPrefab, transform );
-            cell.LocalCoord = new Vector2Int( x, y );
-            cell.name = cell.LocalCoord + " " + nameof( Cell );
+            cell.Init( new Vector2Int( x, y ) );
             cell.Clicked += _clickManager.OnCellClick;
             cellGrid.Set( x, y, cell );
 
             SetPosition();
+
             void SetPosition( )
             {
                 //const int worldToLocalCoefficient = -1;

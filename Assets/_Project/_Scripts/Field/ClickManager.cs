@@ -1,5 +1,6 @@
 ﻿using Field.Cells;
 using Field.GridManipulation;
+using Field.ItemGeneration.FieldItem;
 using UnityEngine;
 
 namespace Field
@@ -11,19 +12,18 @@ public class ClickManager //: MonoBehaviour //ClickHandler
 
     Cell _selected;
 
-    public ClickManager( Board board  )
+    public ClickManager( Board board )
     {
         _board = board;
     }
 
     public void OnCellClick( Cell cell )
     {
-        Debug.Log($"clicked {cell}, selected - {_selected} ", cell);
+        Debug.Log( $"clicked {cell}, selected - {_selected} ", cell );
 
-        if ( _board.CanItemInCellBeSelected( cell.LocalCoord ) )
+        if ( _board.CanItemInCellBeSelected( cell ) )
         {
-            DeSelectBallInTile( _selected );
-            SelectBallInTile( cell );
+            SetNewBallInSelection( cell );
             return;
         }
 
@@ -31,36 +31,46 @@ public class ClickManager //: MonoBehaviour //ClickHandler
         if ( nothingSelectedForMove )
             return;
 
-        Debug.Log($"<color=cyan> TryMoveItem </color>");
+        Debug.Log( $"<color=cyan> TryMoveItem </color>" );
         _board.TryMoveItem( itemHolder: _selected, to: cell.LocalCoord );
     }
 
-
-
-
-
-    bool IsSameNodeClicked( Cell clickedTile )
+    void SetNewBallInSelection( Cell cell )
     {
-        if ( _selected == clickedTile )
-        {
-            Debug.Log( $"<color=cyan> SameNodeClicked </color>" );
-
-            DeSelectBallInTile( _selected ); //чтобы игрока анимация не бесила
-            return true;
-        }
-
-        return false;
+        DeSelectPrevious( );
+        SelectBallInTile( cell );
     }
 
 
-    public void DeSelectBallInTile( Cell clickedTile )
+    // bool IsSameNodeClicked( Cell clickedTile )
+    // {
+    //     if ( _selected == clickedTile )
+    //     {
+    //         Debug.Log( $"<color=cyan> SameNodeClicked </color>" );
+    //
+    //         DeSelectBallInTile( _selected ); //чтобы игрока анимация не бесила
+    //         return true;
+    //     }
+    //
+    //     return false;
+    // }
+
+
+    public void DeSelectPrevious( )
     {
+        if ( _selected )
+        {
+            _selected.StopSelectAnimation(); //todo вернуть в центр клетки. а то зависнет выше
+        }
         _selected = null;
     }
 
 
     void SelectBallInTile( Cell clickedTile )
     {
+
+        clickedTile.StartSelectAnimation();
+
         _selected = clickedTile;
     }
 

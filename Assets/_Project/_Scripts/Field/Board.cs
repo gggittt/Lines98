@@ -14,7 +14,7 @@ public class Board : MonoBehaviour
     [ SerializeField ] CellCreator _cellCreator;
     public event System.Action ItemMoved;
     public List<Vector2Int> EmptyCellsIndexes => _positionsManager.GetEmptyCellsIndexes();
-    public Vector2Int GridSize => new Vector2Int( _itemGrid.Width, _itemGrid.Height );
+    //public Vector2Int GridSize => new Vector2Int( _itemGrid.Width, _itemGrid.Height );
 
 
 
@@ -61,14 +61,18 @@ public class Board : MonoBehaviour
 
         _itemGrid.Set( to, ball );
 
-        Transform parentCell = _cellGrid.Get( to ).transform;
-        ball.SetParentAndMoveToParent( parentCell );
+        Cell newParentCell = _cellGrid.Get( to );
+        newParentCell.Ball = ball;
+
+        ball.SetParentAndMoveToParent( newParentCell.transform );
     }
 
     void MoveItemToCoord( Ball ball, Vector2Int from, Vector2Int to )
     {
         ClearOldPos();
+
         void ClearOldPos( ) => _itemGrid.Set( from, null );
+        // void ClearOldPos_Cell( ) => _cellGrid.Get( from ).Ball = null;
 
         SetItemToCoord( ball, to );
     }
@@ -83,9 +87,10 @@ public class Board : MonoBehaviour
 
     }
 
-    public bool CanItemInCellBeSelected( Vector2Int coord )
+    public bool CanItemInCellBeSelected( Cell cell )
     {
-        Ball item = _itemGrid.Get( coord );
+        // Ball item = _itemGrid.Get( cell );
+        Ball item = cell.Ball;
 
         bool heldRipeItem = item && item.RipedType == ItemRipeType.Big;
         return heldRipeItem;
@@ -100,7 +105,7 @@ public class Board : MonoBehaviour
         Ball ball = _itemGrid.Get( itemHolder.LocalCoord );
         MoveItemToCoord( ball, from: itemHolder.LocalCoord, to );
 
-        _clickManager.DeSelectBallInTile( itemHolder );
+        _clickManager.DeSelectPrevious();
 
         MatchInfo matched = _linesMatchComboChecker.CheckAllDirectionsAtPoint( to );
         //MatchReaper.Reap( matched );

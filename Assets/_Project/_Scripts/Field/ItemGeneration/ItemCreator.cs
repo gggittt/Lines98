@@ -22,8 +22,7 @@ public class ItemCreator : MonoBehaviour
     {
         Ball newBall = GameObject.Instantiate( _prefab );
 
-        newBall.SetColor( _allowedTypeToSpawnAsRandom.GetRandom() );
-        newBall.RipedType = ItemRipeType.Big;
+        newBall.Init(_allowedTypeToSpawnAsRandom.GetRandom(), ItemRipeType.Big);
 
         return newBall;
     }
@@ -32,8 +31,7 @@ public class ItemCreator : MonoBehaviour
     {
         Ball newBall = GameObject.Instantiate( _prefab );
 
-        newBall.SetColor( ShapeType.Debug );
-        newBall.RipedType = ItemRipeType.Big;
+        newBall.Init(ShapeType.Debug, ItemRipeType.Big);
 
         return newBall;
     }
