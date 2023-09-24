@@ -11,6 +11,8 @@ public class PositionManager //<T>
     // readonly IReadOnlyList<T> _grid;
     readonly Grid<Ball> _itemGrid;
     readonly Grid<Cell> _cellGrid;
+    Pathfinder<Vector2Int> _pathfinder;
+
 
     public PositionManager( Grid<Ball> itemGrid, Grid<Cell> cellGrid )
     {
@@ -62,31 +64,42 @@ public class PositionManager //<T>
         return result;
     }
 
-    float GetManhattanDistance( Vector2Int t1, Vector2Int t2 ) =>
+    public float GetManhattanDistance( Vector2Int t1, Vector2Int t2 ) =>
         Mathf.Abs( t1.x - t2.x ) + Mathf.Abs( t1.y - t2.y ); //только прямо, не по диагонали
 
-    Dictionary<Vector2Int, float> GetConnectedNodesAndStepCosts( Vector2Int item )
-        => GetSideNodesAndCosts( item );
+    public Dictionary<Vector2Int, float> GetConnectedFreeNodesAndStepCosts( Vector2Int item )
+        => GetFreeSideNodesAndCosts( item );
 
 
-    Dictionary<Vector2Int, float> GetSideNodesAndCosts( Vector2Int item )
+    Dictionary<Vector2Int, float> GetFreeSideNodesAndCosts( Vector2Int item )
     {
         //мб тупо в структру и в List<NodeWithCost>. и в неё GetHeuristicDistance,
         Dictionary<Vector2Int, float> adjacentNodesAndCosts = new Dictionary<Vector2Int, float>();
 
         foreach ( Direction side in Direction.Orthogonal )
         {
-            adjacentNodesAndCosts.Add( item + side, 1f );
-        }
+            Vector2Int adjacent = item + side;
 
+            bool cellExist = IsInBounds(adjacent);
+
+            Ball ball = _itemGrid.TryGet( adjacent);
+            bool walkable = ball == false || ball.Riped == false;
+
+            if ( cellExist && walkable )
+            {
+                adjacentNodesAndCosts.Add( adjacent, 1f );
+            }
+        }
         return adjacentNodesAndCosts;
     }
+
+    public bool IsInBounds( Vector2Int coords ) => _itemGrid.IsInBounds( coords );
 
 
     public bool IsNeighborRipedAndSameShapeNew( Vector2Int origin, Direction shift, out Vector2Int neighbourCoords )
     {
         neighbourCoords = origin + shift;
-        Debug.Log( $"<color=cyan> checking {neighbourCoords} = {shift} from {origin} </color>" );
+        // Debug.Log( $"<color=cyan> checking {neighbourCoords} = {shift} from {origin} </color>" );
         bool areCoordinatesInBounds = IsInBounds( neighbourCoords );
         if ( areCoordinatesInBounds == false )
         {
@@ -125,7 +138,6 @@ public class PositionManager //<T>
     }
 
 
-    public bool IsInBounds( Vector2Int coords ) => _itemGrid.IsInBounds( coords );
 
     bool AreCellsHasSameShape( Ball ball, Ball ball2 )
     {
@@ -141,8 +153,9 @@ public class PositionManager //<T>
 
         if ( IsInBounds( position ) )
         {
-            return _cellGrid.Get( position );
+            return _cellGrid.TryGet( position );
         }
+
         return null;
 
     }

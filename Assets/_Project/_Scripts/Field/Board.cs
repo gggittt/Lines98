@@ -12,7 +12,9 @@ namespace Field
 public class Board : MonoBehaviour
 {
     [ SerializeField ] CellCreator _cellCreator;
+    [ SerializeField ] ClickManager _clickManager;
     public event System.Action ItemMoved;
+
     public List<Vector2Int> EmptyCellsIndexes => _positionsManager.GetEmptyCellsIndexes();
     //public Vector2Int GridSize => new Vector2Int( _itemGrid.Width, _itemGrid.Height );
 
@@ -20,17 +22,17 @@ public class Board : MonoBehaviour
 
     Grid<Ball> _itemGrid;
     Grid<Cell> _cellGrid;
-    ClickManager _clickManager;
     PositionManager _positionsManager;
     ICheckAllDirections _linesMatchComboChecker;
+    Pathfinder<Vector2Int> _pathfinder;
 
-    // Pathfinder<Vector2Int> _pathfinder;
 
     public void Init( Vector2Int size )
     {
         _itemGrid = new Grid<Ball>( size );
 
-        _clickManager = new ClickManager( this );
+        // _clickManager = new ClickManager( this );
+        _clickManager.Init( this );
 
         _cellGrid = _cellCreator.CreateBoard( _clickManager, size );
 
@@ -39,79 +41,73 @@ public class Board : MonoBehaviour
         // _linesMatchComboChecker = new LinesMatchComboCheckerNotDir( _positionsManager, Direction.AllAxes, 3 );
         _linesMatchComboChecker = new LinesMatchComboChecker( _positionsManager, Direction.AllAxes, 3 );
 
-        // Pathfinder<Vector2Int> pathfinder = new Pathfinder<Vector2Int>( GetManhattanDistance, GetConnectedNodesAndStepCosts );
+        _pathfinder = new Pathfinder<Vector2Int>( _positionsManager.GetManhattanDistance, _positionsManager.GetConnectedFreeNodesAndStepCosts );
 
         //_cellCreatorTransform = cellCreatorTransform; //не нужно её тут хранить. мб еще будет отступ. должен ли board Знать о нём?
     }
 
 
-    public void SetItemToCoord( Ball ball, int positionIndex )
-    {
-        SetItemToCoord( ball, _itemGrid.IndexToCoords( positionIndex ) );
-    }
 
+    void ClearAt( Cell cell )
+    {
+        cell.Ball = null;
+        _itemGrid.Set( cell.LocalCoord, null );
+    }
 
     public void SetItemToCoord( Ball ball, Vector2Int to )
     {
-        Ball oldBall = _itemGrid.Get( to );
+        Ball oldBall = _itemGrid.TryGet( to );
+
+        Cell newParentCell = _cellGrid.TryGet( to );
+        newParentCell.Ball = ball;
+        _itemGrid.Set( to, ball );
+
         if ( oldBall )
         {
             Debug.LogWarning( $"<color=cyan> in coords {to} already was {oldBall} !</color>" );
         }
 
-        _itemGrid.Set( to, ball );
-
-        Cell newParentCell = _cellGrid.Get( to );
-        newParentCell.Ball = ball;
-
         ball.SetParentAndMoveToParent( newParentCell.transform );
     }
 
-    void MoveItemToCoord( Ball ball, Vector2Int from, Vector2Int to )
+    void MoveItem( Ball ball, Cell from, Vector2Int to )
     {
-        ClearOldPos();
-
-        void ClearOldPos( ) => _itemGrid.Set( from, null );
-        // void ClearOldPos_Cell( ) => _cellGrid.Get( from ).Ball = null;
+        ClearAt( from );
 
         SetItemToCoord( ball, to );
     }
 
-    //public Vector3 GridIndexToWorldPos( int index, Vector3 leftUpGridPos )
-    //return new Vector2Int( index % _itemGrid.Width, index / _itemGrid.Width );
-    //return new Vector3( coord.x + leftUpGridPos.x, - 1 * coord.y + leftUpGridPos.y, 0 );
-    //хотел расписать leftUpGridPos + cellSize + ... но проще ставить родителя
-
-    void GameOver( )
-    {
-
-    }
-
     public bool CanItemInCellBeSelected( Cell cell )
     {
-        // Ball item = _itemGrid.Get( cell );
         Ball item = cell.Ball;
 
         bool heldRipeItem = item && item.RipedType == ItemRipeType.Big;
         return heldRipeItem;
     }
 
-    public void TryMoveItem( Cell itemHolder, Vector2Int to )
+    public void TryMoveItem( Cell from, Cell target )
     {
-        //bool pathExist = _waveManager.TryPavePath( from: _selectedCell.LocalCoord, to, out _ );
+        Vector2Int targetCoords = target.LocalCoord;
+        Path<Vector2Int> path = _pathfinder.GenerateAStarPath( from.LocalCoord, targetCoords );
 
-        //bool isLineComplete = _ballMatrix.MoveBigAndSmallBalls( _selectedCell.LocalCoord, bigBallNewCoord: newCoord );
+        Debug.Log($"<color=cyan> {path} </color>");
 
-        Ball ball = _itemGrid.Get( itemHolder.LocalCoord );
-        MoveItemToCoord( ball, from: itemHolder.LocalCoord, to );
+        if ( path.IsSucceed == false )
+        {
+            return;
+        }
 
-        _clickManager.DeSelectPrevious();
+        Ball ball = from.Ball;
 
-        MatchInfo matched = _linesMatchComboChecker.CheckAllDirectionsAtPoint( to );
+        _clickManager.DeSelect( from );
+
+        MoveItem( ball, from, targetCoords );
+
+
+        MatchInfo matched = _linesMatchComboChecker.CheckAllDirectionsAtPoint( targetCoords );
         //MatchReaper.Reap( matched );
 
         OnItemMove();
-
     }
     void OnItemMove( )
     {
@@ -121,30 +117,6 @@ public class Board : MonoBehaviour
 
 
 
-
-
-    public List<Vector2Int> ReserveCells( )
-    {
-        List<Vector2Int> reservedTopCell = new List<Vector2Int>();
-        List<int> reservedTopCell2 = new List<int>();
-
-        const int topSideEndIndex = 3;
-        for ( int x = 0; x < _itemGrid.Width; x++ )
-        for ( int y = 0; y < topSideEndIndex; y++ )
-            reservedTopCell.Add( new Vector2Int( x, y ) );
-
-        reservedTopCell2.Add( _itemGrid.CoordsToIndex( 1.A() ) );
-
-        List<Vector2Int> reservedBottomCell = new List<Vector2Int>();
-        const int bottomSideStartIndex = 6;
-        const int bottomSideEndIndex = 9;
-        for ( int x = 0; x < _itemGrid.Width; x++ )
-        for ( int y = bottomSideStartIndex; y < bottomSideEndIndex; y++ ) //i=6,7,8
-            reservedBottomCell.Add( new Vector2Int( x, y ) );
-
-        //_positionsFinder.ForbiddenToSpawn = reservedTopCell.Concat( reservedBottomCell );
-        return null;
-    }
 
 }
 }

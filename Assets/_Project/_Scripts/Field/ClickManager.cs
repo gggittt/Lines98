@@ -5,25 +5,27 @@ using UnityEngine;
 
 namespace Field
 {
-public class ClickManager //: MonoBehaviour //ClickHandler
+public class ClickManager : MonoBehaviour //ClickHandler
 {
-    readonly Board _board; // ffixme циклическая зависимость
+    Board _board; // ffixme циклическая зависимость
     //PositionManager<> positionManager
 
-    Cell _selected;
+    [SerializeField] Cell _selected; //see for debug
 
-    public ClickManager( Board board )
+    // public ClickManager( Board board ) => _board = board;
+
+    public void Init( Board board )
     {
         _board = board;
     }
 
     public void OnCellClick( Cell cell )
     {
-        Debug.Log( $"clicked {cell}, selected - {_selected} ", cell );
+        Debug.Log( $"clicked item: {cell}\n selected - {_selected} ", cell );
 
         if ( _board.CanItemInCellBeSelected( cell ) )
         {
-            SetNewBallInSelection( cell );
+            ChangeSelectionTo( cell );
             return;
         }
 
@@ -32,12 +34,15 @@ public class ClickManager //: MonoBehaviour //ClickHandler
             return;
 
         Debug.Log( $"<color=cyan> TryMoveItem </color>" );
-        _board.TryMoveItem( itemHolder: _selected, to: cell.LocalCoord );
+
+        var cashed = _selected;
+
+        _board.TryMoveItem( from: _selected, cell );
     }
 
-    void SetNewBallInSelection( Cell cell )
+    void ChangeSelectionTo( Cell cell )
     {
-        DeSelectPrevious( );
+        DeSelect( _selected );
         SelectBallInTile( cell );
     }
 
@@ -56,12 +61,13 @@ public class ClickManager //: MonoBehaviour //ClickHandler
     // }
 
 
-    public void DeSelectPrevious( )
+    public void DeSelect( Cell itemHolder )
     {
-        if ( _selected )
+        if ( itemHolder )
         {
-            _selected.StopSelectAnimation(); //todo вернуть в центр клетки. а то зависнет выше
+            itemHolder.StopSelectAnimation();
         }
+
         _selected = null;
     }
 

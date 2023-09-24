@@ -98,7 +98,7 @@ public class Ball : MonoBehaviour
 
     public override string ToString( )
     {
-        return $"<color=magenta>{nameof( Ball )}</color>, {RipedType}, {Shape}";
+        return $"{nameof( Ball )}, {RipedType}, {Shape}";
     }
 }
 }

@@ -67,16 +67,17 @@ public class Grid<TCell>
         Cells[ index ] = value;
 
 
-    public TCell Get( Vector2Int coords )
+    public TCell TryGet( Vector2Int coords )
     {
         if ( IsXInBounds( coords.x ) == false )
         {
-            Debug.LogError( $"<color=cyan> x not valid: {coords.x} </color>" );
+            //Debug.LogError( $"<color=cyan> x not valid: {coords.x} </color>" );
+            return default;
         }
-
         if ( IsYInBounds( coords.y ) == false )
         {
-            Debug.LogError( $"<color=cyan> y not valid: {coords.y} </color>" );
+            //Debug.LogError( $"<color=cyan> y not valid: {coords.y} </color>" );
+            return default;
         }
 
         int index = CoordsToIndex( coords.x, coords.y );
@@ -107,6 +108,6 @@ public class Grid<TCell>
         return IndexToCoords( i );
     }
 
-    public TCell this[ Vector2Int coords ] { get { return Get( coords ); } }
+    public TCell this[ Vector2Int coords ] { get { return TryGet( coords ); } }
 }
 }

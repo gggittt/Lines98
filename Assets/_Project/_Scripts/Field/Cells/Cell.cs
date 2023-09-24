@@ -19,7 +19,7 @@ public class Cell : MonoBehaviour
     public void Init( Vector2Int coords )
     {
         LocalCoord = coords;
-        name = LocalCoord + " " + nameof( Cell );
+        name = nameof( Cell ) + " " + LocalCoord;
     }
 
     public override string ToString( )
