@@ -34,7 +34,7 @@ fixed - LinesMatchComboChecker ошибка в определении индек
 - Вернуть в проект Bootstrapper и StateMachine.
 - Pathfind Добавить Dijkstra and FloodFill
 - Стоило сразу использовать Zenject, было бы проще.
-- Raname: Script 'Grid' has the same name as built-in Unity component. AddComponent and GetComponent will not work with this script.
+<!-- - Raname: Script 'Grid' has the same name as built-in Unity component. AddComponent and GetComponent will not work with this script.-->
 
 ### Refactoring
 - Architecture\ расцепить сильные связи везде где есть
