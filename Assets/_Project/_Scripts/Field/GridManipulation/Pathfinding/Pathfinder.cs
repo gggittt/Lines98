@@ -8,14 +8,14 @@ public class Pathfinder<TNode>
 {
     readonly int _calculatorPatience = 9_999;
     readonly Func<TNode, TNode, float> _getHeuristicDistance;
-    readonly Func<TNode, Dictionary<TNode, float>> _getConnectedNodesAndStepCosts; //именно connected, т.к. связи мб не только с neighbours
-    //пока нужна только: Func<T, T> _walkableNeighbours; //пока stepCost не нужен?
+    readonly Func<TNode, List<TNode>> _getConnectedNodes; //именно connected, т.к. связи мб не только с neighbours
+    int _sideCost;
 
     public Pathfinder( Func<TNode, TNode, float> getHeuristicDistance,
-        Func<TNode, Dictionary<TNode, float>> getConnectedNodesAndStepCosts )
+        Func<TNode, List<TNode>> getConnectedNodes )
     {
         _getHeuristicDistance = getHeuristicDistance;
-        _getConnectedNodesAndStepCosts = getConnectedNodesAndStepCosts;
+        _getConnectedNodes = getConnectedNodes;
     }
 
     public Path<TNode> GenerateAStarPath( TNode startNode, TNode endNode )
@@ -56,18 +56,15 @@ public class Pathfinder<TNode>
                 return RetracePath( startNode, currentNode, directions );
             }
 
-            Dictionary<TNode, float> connected = _getConnectedNodesAndStepCosts( currentNode );
+            List<TNode> connected = _getConnectedNodes( currentNode );
 
-            foreach ( KeyValuePair<TNode, float> nodeAndDistance in connected )
+            foreach ( TNode neighbour in connected )
             {
-                TNode neighbour = nodeAndDistance.Key;
-                float distanceCurrentToNeighbour = nodeAndDistance.Value;
-
                 if ( closedList.Contains<TNode>( neighbour ) )
                     continue;
 
-
-                float distanceStartToNeighbour = distanceCurrentToNeighbour + nodeValues.G;
+                _sideCost = 1;
+                float distanceStartToNeighbour = nodeValues.G + _sideCost;
 
                 bool containsKey = openList.ContainsKey( neighbour ) &&
                                    !( openList[ neighbour ].G > (double) distanceStartToNeighbour );
@@ -93,21 +90,7 @@ public class Pathfinder<TNode>
         return new Path<TNode>
         { };
     }
-    // KeyValuePair<TNode, NodeValues> FindBestPriority( Dictionary<TNode, NodeValues> pairs )
-    // {
-    //     if ( pairs.Count == 0 )
-    //     {
-    //         return pairs.ElementAt(0);
-    //     }
-    //
-    //     KeyValuePair<TNode, NodeValues> mostSuitable;
-    //     for ( int i = 0; i < pairs.Count; i++ )
-    //     {
-    //         bool isAnotherWayShorter = firstPair.Value.FinalCost >= (double) secondPair.Value.FinalCost;
-    //
-    //     }
-    //
-    // }
+
 
     static KeyValuePair<TNode, NodeValues> FindBestPriority( KeyValuePair<TNode, NodeValues> firstPair, KeyValuePair<TNode, NodeValues> secondPair )
     {
@@ -140,7 +123,7 @@ public class Pathfinder<TNode>
         successfulPath.Reverse();
 
         return new Path<TNode>
-        { IsSucceed = true, Value = successfulPath };
+        { IsSucceed = true, PathData = successfulPath };
     }
 
 

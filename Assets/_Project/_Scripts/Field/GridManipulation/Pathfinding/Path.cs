@@ -3,7 +3,7 @@
 public struct Path<TNode>
 {
     public bool IsSucceed;
-    public List<TNode> Value; //ранее List<T>. сделать тем типом, который нужен запрашивающему классу
+    public List<TNode> PathData; //ранее List<T>. сделать тем типом, который нужен запрашивающему классу
 
     public override string ToString( )
     {
@@ -11,7 +11,7 @@ public struct Path<TNode>
 
         if ( IsSucceed )
         {
-            foreach ( TNode node in Value )
+            foreach ( TNode node in PathData )
                 result += node + ", " ;
         }
 

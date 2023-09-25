@@ -70,13 +70,6 @@ public class Board : MonoBehaviour
         ball.SetParentAndMoveToParent( newParentCell.transform );
     }
 
-    void MoveItem( Ball ball, Cell from, Vector2Int to )
-    {
-        ClearAt( from );
-
-        SetItemToCoord( ball, to );
-    }
-
     public bool CanItemInCellBeSelected( Cell cell )
     {
         Ball item = cell.Ball;
@@ -89,8 +82,12 @@ public class Board : MonoBehaviour
     {
         Vector2Int targetCoords = target.LocalCoord;
         Path<Vector2Int> path = _pathfinder.GenerateAStarPath( from.LocalCoord, targetCoords );
+        //todo точки на Cell, кнопка подтверждения
+        //offer suggestPath.
+        //min2win шар телепортируется, а путь показывают точки!
+        //чтобы не предлагал похожие пути, во время фазы предложения игрок кликает на пустые клетки - и из них пытаться сделать путь.
 
-        Debug.Log($"<color=cyan> {path} </color>");
+        Debug.Log( $"<color=cyan> {path} </color>" );
 
         if ( path.IsSucceed == false )
         {
@@ -101,22 +98,22 @@ public class Board : MonoBehaviour
 
         _clickManager.DeSelect( from );
 
-        MoveItem( ball, from, targetCoords );
+        MoveItem( ball, from, path.PathData );
 
 
         MatchInfo matched = _linesMatchComboChecker.CheckAllDirectionsAtPoint( targetCoords );
         //MatchReaper.Reap( matched );
 
-        OnItemMove();
-    }
-    void OnItemMove( )
-    {
         ItemMoved?.Invoke();
-        //в LineChecker передавать не весь _itemGrid или TCell[] Cells, а только Func GetSideNodesAndCosts( Vector2Int item )
+
     }
+    void MoveItem( Ball ball, Cell from, List<Vector2Int> path )
+    {
+        ClearAt( from );
+        SetItemToCoord( ball, path.Last() );
 
-
-
+        ball.FollowPath( path );
+    }
 
 }
 }

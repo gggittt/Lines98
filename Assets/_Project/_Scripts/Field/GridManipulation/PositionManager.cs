@@ -67,14 +67,14 @@ public class PositionManager //<T>
     public float GetManhattanDistance( Vector2Int t1, Vector2Int t2 ) =>
         Mathf.Abs( t1.x - t2.x ) + Mathf.Abs( t1.y - t2.y ); //только прямо, не по диагонали
 
-    public Dictionary<Vector2Int, float> GetConnectedFreeNodesAndStepCosts( Vector2Int item )
+    public List<Vector2Int> GetConnectedFreeNodesAndStepCosts( Vector2Int item )
         => GetFreeSideNodesAndCosts( item );
 
 
-    Dictionary<Vector2Int, float> GetFreeSideNodesAndCosts( Vector2Int item )
+    List<Vector2Int> GetFreeSideNodesAndCosts( Vector2Int item )
     {
         //мб тупо в структру и в List<NodeWithCost>. и в неё GetHeuristicDistance,
-        Dictionary<Vector2Int, float> adjacentNodesAndCosts = new Dictionary<Vector2Int, float>();
+        List<Vector2Int> adjacentNodesAndCosts = new List<Vector2Int>();
 
         foreach ( Direction side in Direction.Orthogonal )
         {
@@ -87,7 +87,7 @@ public class PositionManager //<T>
 
             if ( cellExist && walkable )
             {
-                adjacentNodesAndCosts.Add( adjacent, 1f );
+                adjacentNodesAndCosts.Add( adjacent);
             }
         }
         return adjacentNodesAndCosts;

@@ -54,15 +54,19 @@ public class Ball : MonoBehaviour
         return local;
     }
 
-    public void FollowPath( List<Vector3> path )
+    public void FollowPath( List<Vector2Int> path )
     {
-        if ( path == null )
-            return;
-
         for ( int i = 0; i < path.Count; i++ )
         {
-
+            Vector3 worldPoint = FromMatrixCoordToWorldCartesian(path[ i ]);
+            //MoveTo( worldPoint );
         }
+    }
+
+    Vector3 FromMatrixCoordToWorldCartesian( Vector2Int matrix )
+    {
+        var cartesian = new Vector3( matrix.x, - matrix.y );
+        return cartesian;
     }
 
 
@@ -88,6 +92,7 @@ public class Ball : MonoBehaviour
     void OnValidate( )
     {
         InitRequired();
+
         void InitRequired( )
         {
             if ( !_ballUi )
