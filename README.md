@@ -23,10 +23,6 @@ Unity version - 2019.4.17f1. Потому что старые версии бы�
 fixed - LinesMatchComboChecker ошибка в определении индекса соседней клетки
 -->
 
-<!-- 
-pc test
--->
-
 
 ## TODO
 - translate READMI.md to english
