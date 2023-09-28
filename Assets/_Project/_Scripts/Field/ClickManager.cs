@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Field
 {
-public class ClickManager : MonoBehaviour //ClickHandler
+public class ClickManager : MonoBehaviour
 {
     Board _board; // ffixme циклическая зависимость
     //PositionManager<> positionManager

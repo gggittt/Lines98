@@ -33,15 +33,18 @@ public class ItemFactory : MonoBehaviour
         Ball ball = _itemCreator.CreateSmallItemWithRandomColor();
 
         _board.SetItemToCoord( ball, indexInGrid );
+        _board.SetItemTo( ball, to: indexInGrid );
+
     }
 
     public void CreateDebugItems( )
     {
-        foreach ( Vector2Int vector2Int in GetDebugBallsPositions() )
+        foreach ( Vector2Int indexInGrid in GetDebugBallsPositions() )
         {
             Ball ball = _itemCreator.CreateRipedDebugItem();
 
-            _board.SetItemToCoord( ball, vector2Int );
+            _board.SetItemToCoord( ball, indexInGrid );
+            _board.SetItemTo( ball, to: indexInGrid );
         }
     }
 

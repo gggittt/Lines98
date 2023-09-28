@@ -6,5 +6,6 @@ namespace Field.GridManipulation
 public interface ICheckAllDirections
 {
     MatchInfo CheckAllDirectionsAtPoint( Vector2Int startingPosition );
+
 }
 }

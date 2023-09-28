@@ -23,7 +23,7 @@ public class Board : MonoBehaviour
     Grid<Ball> _itemGrid;
     Grid<Cell> _cellGrid;
     PositionManager _positionsManager;
-    ICheckAllDirections _linesMatchComboChecker;
+    ICheckAllDirections _matchChecker;
     Pathfinder<Vector2Int> _pathfinder;
 
 
@@ -39,7 +39,7 @@ public class Board : MonoBehaviour
         _positionsManager = new PositionManager( _itemGrid, _cellGrid );
 
         // _linesMatchComboChecker = new LinesMatchComboCheckerNotDir( _positionsManager, Direction.AllAxes, 3 );
-        _linesMatchComboChecker = new LinesMatchComboChecker( _positionsManager, Direction.AllAxes, 3 );
+        _matchChecker = new MatchChecker( _positionsManager, Direction.AllAxes, 3 );
 
         _pathfinder = new Pathfinder<Vector2Int>( _positionsManager.GetManhattanDistance, _positionsManager.GetConnectedFreeNodesAndStepCosts );
 
@@ -66,9 +66,9 @@ public class Board : MonoBehaviour
         {
             Debug.LogWarning( $"<color=cyan> in coords {to} already was {oldBall} !</color>" );
         }
-
-        ball.SetParentAndMoveToParent( newParentCell.transform );
     }
+
+
 
     public bool CanItemInCellBeSelected( Cell cell )
     {
@@ -94,26 +94,45 @@ public class Board : MonoBehaviour
             return;
         }
 
-        Ball ball = from.Ball;
 
         _clickManager.DeSelect( from );
 
-        MoveItem( ball, from, path.PathData );
+        MoveItem( from, path.PathData );
 
 
-        MatchInfo matched = _linesMatchComboChecker.CheckAllDirectionsAtPoint( targetCoords );
+        MatchInfo matched = _matchChecker.CheckAllDirectionsAtPoint( targetCoords );
         //MatchReaper.Reap( matched );
 
-        ItemMoved?.Invoke();
-
+        // ItemMoved?.Invoke();
     }
-    void MoveItem( Ball ball, Cell from, List<Vector2Int> path )
+
+    void MoveItem( Cell from, List<Vector2Int> path )
     {
+        Ball ball = from.Ball;
+
         ClearAt( from );
         SetItemToCoord( ball, path.Last() );
+        // TeleportItemTo( ball, path.Last() );
 
-        ball.FollowPath( path );
+        List<Transform> pathTransforms = ( path
+               .Select( coords => _cellGrid[ coords ].transform ) )
+           .ToList();
+
+        ball.Ui.FollowPath( pathTransforms, OnMove );
+
+        void OnMove( )
+        {
+            SetItemTo( ball, path.Last() );
+            ItemMoved?.Invoke();
+        }
     }
+
+    public void SetItemTo( Ball ball, Vector2Int to )
+    {
+        ball.SetParentAndMoveToParent( _cellGrid[ to ].transform );
+    }
+
+
 
 }
 }

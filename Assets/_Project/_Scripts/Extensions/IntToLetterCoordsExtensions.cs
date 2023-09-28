@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Extensions
 {
-public static class IntToLetterCoordsExtension
+public static class IntToLetterCoordsExtensions
 {
     //мб переисп логику SymbolsType.ArabicNumbers из BoundCoordinatesCreator
     const string EngAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

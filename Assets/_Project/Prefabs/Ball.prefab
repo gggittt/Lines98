@@ -115,6 +115,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bigBallLocalScale: {x: 1, y: 1, z: 1}
   _smallBallLocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  _selectionAnimationHeight: 0.25
+  _selectionAnimationDuration: 0.3
+  _moveStepDuration: 0.25
 --- !u!114 &161350975490588404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,3 +130,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f46522eb82eb43fea7bedfc856ff8298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _moveStepTimeout: 40

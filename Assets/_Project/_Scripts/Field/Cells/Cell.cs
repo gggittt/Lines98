@@ -19,18 +19,17 @@ public class Cell : MonoBehaviour
     public void Init( Vector2Int coords )
     {
         LocalCoord = coords;
-        name = nameof( Cell ) + " " + LocalCoord;
+        name = $"{nameof( Cell )} {LocalCoord} ";
     }
 
     public override string ToString( )
     {
-        var result = nameof( Cell ) + LocalCoord;
         if ( HasItem )
         {
-            return result + Ball;
+            return $"{name}, hold item: {Ball}";
         }
 
-        return result + ", empty";
+        return name + ", empty";
     }
 
 
@@ -38,14 +37,14 @@ public class Cell : MonoBehaviour
     {
         if ( HasItem )
         {
-            Ball.StopSelectAnimation();
+            Ball.Ui.StopSelectAnimation();
         }
     }
     public void StartSelectAnimation( )
     {
         if ( HasItem )
         {
-            Ball.StartSelectAnimation();
+            Ball.Ui.StartSelectAnimation();
         }
     }
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using DG.Tweening;
+using DG.Tweening.Core;
 using UnityEngine;
 
 namespace Field.ItemGeneration.FieldItem
@@ -10,64 +12,37 @@ public class Ball : MonoBehaviour
 {
     //public Vector2Int LocalCoord { get; private set; }
     //IndexToCoords в _grid = не перевод в worldPos
-    [ SerializeField ] float _heightAnimation = 0.7f;
 
 
     public ShapeType Shape { get; private set; }
     public ItemRipeType RipedType { get; private set; } = ItemRipeType.Small;
     public bool Riped => RipedType == ItemRipeType.Big;
-
-    BallUi _ballUi;
-    Tween _infinitySelectLoop; //_bounceTween
-    Vector3 _originPosition;
+    public BallUi Ui { get; private set; }
 
     public void Init( ShapeType shapeType, ItemRipeType itemRipeType )
     {
         Shape = shapeType;
-        _ballUi.Paint( shapeType );
+
+        Ui = GetComponent<BallUi>();
+        Ui.Paint( shapeType );
 
         RipedType = itemRipeType;
 
         name = ToString();
     }
 
-    void Awake( )
-    {
-        _ballUi = GetComponent<BallUi>();
+    /*
+     * передавать List<Transform> pathParents
+     *
+     * 1. setParent
+     * 1. setParent
 
-        _infinitySelectLoop = transform.DOLocalMoveY( .5f, .5f )
-           .SetLoops( - 1, LoopType.Yoyo )
-           .Pause();
-    }
+     */
+    [ SerializeField ] int _moveStepTimeout = 40;
 
-    public void TeleportTo( Vector2 local )
-    {
-        Vector3 worldPos = ToWorldPos( local ); //сейчас телепортируется. нужно передавать List<Vector2Int> по которым пройти
-        transform.position = worldPos;
-    }
 
-    Vector3 ToWorldPos( Vector2 local )
-    {
-        Debug.Log( $"<color=cyan> {this} moved from {transform.position} to {local} </color>" );
 
-        Debug.Log( $"<color=magenta> not implement </color>" );
-        return local;
-    }
-
-    public void FollowPath( List<Vector2Int> path )
-    {
-        for ( int i = 0; i < path.Count; i++ )
-        {
-            Vector3 worldPoint = FromMatrixCoordToWorldCartesian(path[ i ]);
-            //MoveTo( worldPoint );
-        }
-    }
-
-    Vector3 FromMatrixCoordToWorldCartesian( Vector2Int matrix )
-    {
-        var cartesian = new Vector3( matrix.x, - matrix.y );
-        return cartesian;
-    }
+    Vector3 FromMatrixCoordToWorldCartesian( Vector2Int matrix ) => new Vector3( matrix.x, - matrix.y );
 
 
     public void SetParentAndMoveToParent( Transform parent )
@@ -77,27 +52,14 @@ public class Ball : MonoBehaviour
     }
 
 
-    public void StartSelectAnimation( )
-    {
-        _originPosition = transform.position;
-        _infinitySelectLoop.Play();
-    }
-
-    public void StopSelectAnimation( )
-    {
-        _infinitySelectLoop?.Pause();
-        transform.position = _originPosition;
-    }
-
     void OnValidate( )
     {
         InitRequired();
 
         void InitRequired( )
         {
-            if ( !_ballUi )
-                _ballUi = GetComponent<BallUi>();
-            // _ballUi?? = GetComponent<BallUi>(); Feature 'null-coalescing assignment' is not available. Please use language version 8.0 or greater
+            if ( !Ui )
+                Ui = GetComponent<BallUi>();
         }
     }
 

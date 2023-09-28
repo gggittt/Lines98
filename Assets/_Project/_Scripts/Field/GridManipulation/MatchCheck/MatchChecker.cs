@@ -7,8 +7,7 @@ using UnityEngine;
 
 namespace Field.GridManipulation
 {
-//naming = в название отразить что он diagonalInclude
-public class LinesMatchComboChecker : ICheckAllDirections
+public class MatchChecker : ICheckAllDirections
 {
     // readonly Func<T, List<T>> _getNeighborByDirection;
     readonly PositionManager _positionManager;
@@ -17,7 +16,7 @@ public class LinesMatchComboChecker : ICheckAllDirections
 
 
     // public LinesMatchComboChecker( Func<T, List<T>> getNeighborByDirection, Direction[][] axesToCheck , int minLineSize = 5 )
-    public LinesMatchComboChecker( PositionManager positionManager, Direction[][] axesToCheck, int minLineSize )
+    public MatchChecker( PositionManager positionManager, Direction[][] axesToCheck, int minLineSize )
     {
         _positionManager = positionManager;
         _axesToCheck = axesToCheck;

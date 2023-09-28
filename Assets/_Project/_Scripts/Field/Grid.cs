@@ -11,9 +11,7 @@ public class Grid<TCell>
     public int Width { get; }
     public int Height { get; }
 
-
     public delegate bool Filter( TCell cell );
-
 
     public Grid( int width, int height )
     {
@@ -21,10 +19,8 @@ public class Grid<TCell>
         Width = width;
         Height = height;
     }
-    public Grid( Vector2Int size ) : this( size.x, size.y )
-    {
 
-    }
+    public Grid( Vector2Int size ) : this( size.x, size.y ) { }
 
     public HashSet<Vector2Int> GetCoordsOfFilteredItems( Filter filterForEachItem )
     {
@@ -74,6 +70,7 @@ public class Grid<TCell>
             //Debug.LogError( $"<color=cyan> x not valid: {coords.x} </color>" );
             return default;
         }
+
         if ( IsYInBounds( coords.y ) == false )
         {
             //Debug.LogError( $"<color=cyan> y not valid: {coords.y} </color>" );
