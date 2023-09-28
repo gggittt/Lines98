@@ -98,20 +98,17 @@ public class Board : MonoBehaviour
         _clickManager.DeSelect( from );
 
         MoveItem( from, path.PathData );
-
-
-        MatchInfo matched = _matchChecker.CheckAllDirectionsAtPoint( targetCoords );
-        //MatchReaper.Reap( matched );
-
-        // ItemMoved?.Invoke();
     }
+
+
 
     void MoveItem( Cell from, List<Vector2Int> path )
     {
         Ball ball = from.Ball;
 
         ClearAt( from );
-        SetItemToCoord( ball, path.Last() );
+        Vector2Int end = path.Last();
+        SetItemToCoord( ball, end );
         // TeleportItemTo( ball, path.Last() );
 
         List<Transform> pathTransforms = ( path
@@ -122,8 +119,23 @@ public class Board : MonoBehaviour
 
         void OnMove( )
         {
-            SetItemTo( ball, path.Last() );
+            SetItemTo( ball, end );
+            CheckMatchAt( end );
             ItemMoved?.Invoke();
+        }
+    }
+
+    void CheckMatchAt( Vector2Int center )
+    {
+        MatchInfo matched = _matchChecker.CheckAllDirectionsAtPoint( center );
+        // MatchReaper.Reap( matched );
+
+        foreach ( Vector2Int item in matched.AllSuitableItems )
+        {
+            Ball ball = _itemGrid[ item ];
+            _itemGrid[ item ] = null;
+            _cellGrid[ item ].Ball = null;
+            Destroy( ball.gameObject );
         }
     }
 
@@ -131,8 +143,6 @@ public class Board : MonoBehaviour
     {
         ball.SetParentAndMoveToParent( _cellGrid[ to ].transform );
     }
-
-
 
 }
 }

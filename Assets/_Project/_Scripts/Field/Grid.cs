@@ -105,6 +105,6 @@ public class Grid<TCell>
         return IndexToCoords( i );
     }
 
-    public TCell this[ Vector2Int coords ] { get { return TryGet( coords ); } }
+    public TCell this[ Vector2Int coords ] { get => TryGet( coords ); set => Set( coords.x, coords.y, value ); }
 }
 }

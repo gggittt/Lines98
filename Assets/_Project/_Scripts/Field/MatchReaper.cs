@@ -18,7 +18,7 @@ public class MatchReaper //Collector
 
     public static void Reap( MatchInfo matchInfo )
     {
-        var itemCount = matchInfo.AllSuitableItems.Count;
+        int itemCount = matchInfo.AllSuitableItems.Count;
         //Score.Add(_scoreForMatch[itemCount]);
 
         //вместо Vector2Int - IPoolable/IObjectPool
