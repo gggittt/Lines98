@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Test
 {
-public class MyDebug : MonoBehaviour
+public class AnimationDebug : MonoBehaviour
 {
     // TweenerCore<Vector3, Vector3, VectorOptions> _infinitySelectLoop;
     // Vector3 _endValue;

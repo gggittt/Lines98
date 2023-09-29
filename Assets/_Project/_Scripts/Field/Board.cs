@@ -135,7 +135,8 @@ public class Board : MonoBehaviour
             Ball ball = _itemGrid[ item ];
             _itemGrid[ item ] = null;
             _cellGrid[ item ].Ball = null;
-            Destroy( ball.gameObject );
+             ball.gameObject.Destroy();
+            // Destroy( ball.gameObject );
         }
     }
 
