@@ -1,7 +1,8 @@
 ﻿using System;
+using Field.ItemGeneration;
 using UnityEngine;
 
-public class GameData : MonoBehaviour
+public class GameData : MonoBehaviour //SessionData? разбить с LevelData
 {
     //все в одном классе - чтобы при обнове игры, или при загрузке из облака, можно было бы легко изменить данные на другие.
 
@@ -25,3 +26,5 @@ public class GameData : MonoBehaviour
 
     }
 }
+
+

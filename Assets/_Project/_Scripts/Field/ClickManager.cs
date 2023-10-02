@@ -7,10 +7,13 @@ namespace Field
 {
 public class ClickManager : MonoBehaviour
 {
+
+
+
     Board _board; // ffixme циклическая зависимость
     //PositionManager<> positionManager
 
-    [SerializeField] Cell _selected; //see for debug
+    Cell _selected;
 
     // public ClickManager( Board board ) => _board = board;
 

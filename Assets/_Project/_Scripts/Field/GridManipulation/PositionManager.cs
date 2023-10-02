@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Field.Cells;
+using Field.GridManipulation.Pathfinding;
 using Field.ItemGeneration.FieldItem;
 using UnityEngine;
 

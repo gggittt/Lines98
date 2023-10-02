@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Field.ItemGeneration.FieldItem;
 using UnityEngine;
-using Random = System.Random;
 
-namespace Field.ItemGeneration
+namespace Field.GridManipulation
 {
 public class CellsOfTypeFinder
 {

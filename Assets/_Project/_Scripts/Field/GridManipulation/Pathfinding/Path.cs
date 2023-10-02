@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+namespace Field.GridManipulation.Pathfinding
+{
 public struct Path<TNode>
 {
     public bool IsSucceed;
@@ -17,4 +19,5 @@ public struct Path<TNode>
 
         return result;
     }
+}
 }

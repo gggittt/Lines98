@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Extensions;
+using Extensions.UnityTypes;
 using Field.Cells;
 using Field.GridManipulation;
+using Field.GridManipulation.MatchCheck;
+using Field.GridManipulation.Pathfinding;
 using Field.ItemGeneration;
 using Field.ItemGeneration.FieldItem;
 using UnityEngine;
@@ -94,7 +97,6 @@ public class Board : MonoBehaviour
             return;
         }
 
-
         _clickManager.DeSelect( from );
 
         MoveItem( from, path.PathData );
@@ -111,11 +113,8 @@ public class Board : MonoBehaviour
         SetItemToCoord( ball, end );
         // TeleportItemTo( ball, path.Last() );
 
-        List<Transform> pathTransforms = ( path
-               .Select( coords => _cellGrid[ coords ].transform ) )
-           .ToList();
 
-        ball.Ui.FollowPath( pathTransforms, OnMove );
+        ball.Ui.FollowPath( path, OnMove );
 
         void OnMove( )
         {
@@ -135,8 +134,7 @@ public class Board : MonoBehaviour
             Ball ball = _itemGrid[ item ];
             _itemGrid[ item ] = null;
             _cellGrid[ item ].Ball = null;
-             ball.gameObject.Destroy();
-            // Destroy( ball.gameObject );
+            ball.gameObject.Destroy();
         }
     }
 

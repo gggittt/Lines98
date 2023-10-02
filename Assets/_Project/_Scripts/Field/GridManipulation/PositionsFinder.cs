@@ -5,7 +5,7 @@ using System.Linq;
 using Field.ItemGeneration.FieldItem;
 using UnityEngine;
 
-namespace Field
+namespace Field.GridManipulation
 {
 public class PositionsFinder //для генерации smallPreview и стартовых. для перемещения мелкого после перекрытия - др скрипт - туда передавать ItemSizeType?[]
 {

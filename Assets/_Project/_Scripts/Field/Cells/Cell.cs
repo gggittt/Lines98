@@ -1,4 +1,5 @@
-﻿using Field.ItemGeneration.FieldItem;
+﻿using System;
+using Field.ItemGeneration.FieldItem;
 using UnityEngine;
 
 namespace Field.Cells
@@ -6,7 +7,7 @@ namespace Field.Cells
 public class Cell : MonoBehaviour
 {
     public Vector2Int LocalCoord { get; private set; }
-    public bool HasItem => Ball != null; //для анализа логики при клике. для проверки линий - см Grid<Item>
+    public bool HasItem => Ball != null;
     public Ball Ball { get; set; }
 
     public event System.Action<Cell> Clicked;

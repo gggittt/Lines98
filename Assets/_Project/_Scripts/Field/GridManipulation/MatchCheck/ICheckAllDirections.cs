@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Field.GridManipulation
+namespace Field.GridManipulation.MatchCheck
 {
 public interface ICheckAllDirections
 {

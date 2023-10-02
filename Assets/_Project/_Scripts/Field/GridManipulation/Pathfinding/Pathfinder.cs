@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-
+namespace Field.GridManipulation.Pathfinding
+{
 public class Pathfinder<TNode>
 {
     readonly int _calculatorPatience = 9_999;
@@ -127,4 +127,5 @@ public class Pathfinder<TNode>
     }
 
 
+}
 }

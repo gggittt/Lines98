@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Extensions;
 using UnityEngine;
 
-namespace Field.GridManipulation
+namespace Field.GridManipulation.MatchCheck
 {
 public class MatchChecker : ICheckAllDirections
 {

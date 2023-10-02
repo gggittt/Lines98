@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+namespace Field
+{
 public class Direction
 {
     //OttoBotCode https://youtu.be/KuAsKRn9XD0?t=521
@@ -141,4 +143,5 @@ public class Direction
         //Vector2Int a = Vector2Int.zero + Direction.NorthEast * 4;
 
     }
+}
 }

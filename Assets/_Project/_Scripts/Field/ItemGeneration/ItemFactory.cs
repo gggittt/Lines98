@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Extensions;
-using Field.ItemGeneration;
 using Field.ItemGeneration.FieldItem;
 using UnityEngine;
 
-namespace Field
+namespace Field.ItemGeneration
 {
 public class ItemFactory : MonoBehaviour
 {

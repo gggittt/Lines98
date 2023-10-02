@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Field.GridManipulation;
+using Field.GridManipulation.MatchCheck;
 using UnityEngine;
 
 namespace Field
@@ -15,6 +16,11 @@ public class MatchReaper //Collector
       { 8, 11 },
       { 9, 14 },
     };
+
+    public MatchReaper( )
+    {
+        Debug.Log($"<color=cyan> Initialized {nameof(MatchReaper)} </color>");
+    }
 
     public static void Reap( MatchInfo matchInfo )
     {
