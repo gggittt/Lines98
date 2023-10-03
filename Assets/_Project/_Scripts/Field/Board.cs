@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Extensions;
 using Extensions.UnityTypes;
@@ -113,8 +114,8 @@ public class Board : MonoBehaviour
         SetItemToCoord( ball, end );
         // TeleportItemTo( ball, path.Last() );
 
-
-        ball.Ui.FollowPath( path, OnMove );
+        var worldPath = ToWorldCoords( path );
+        ball.Ui.FollowPath( worldPath, OnMove );
 
         void OnMove( )
         {
@@ -122,6 +123,18 @@ public class Board : MonoBehaviour
             CheckMatchAt( end );
             ItemMoved?.Invoke();
         }
+    }
+    List<Vector3> ToWorldCoords( List<Vector2Int> path )
+    {
+        var result = new List<Vector3>();
+
+        foreach ( Vector2Int vector2Int in path )
+        {
+            var point = _cellGrid.Get( vector2Int );
+            result.Add( point.transform.position );
+        }
+
+        return result;
     }
 
     void CheckMatchAt( Vector2Int center )

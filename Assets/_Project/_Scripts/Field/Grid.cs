@@ -83,6 +83,11 @@ public class Grid<TCell>
 
     public TCell Get( int index ) =>
         Cells[ index ];
+    public TCell Get( Vector2Int coords ) =>
+        TryGet( coords );
+
+    //fixMe убрать. по вызову через "." не видно, неочевидно что этот индексатор тут есть
+    public TCell this[ Vector2Int coords ] { get => TryGet( coords ); set => Set( coords.x, coords.y, value ); }
 
 
     public bool IsXInBounds( int pos ) =>
@@ -105,6 +110,5 @@ public class Grid<TCell>
         return IndexToCoords( i );
     }
 
-    public TCell this[ Vector2Int coords ] { get => TryGet( coords ); set => Set( coords.x, coords.y, value ); }
 }
 }

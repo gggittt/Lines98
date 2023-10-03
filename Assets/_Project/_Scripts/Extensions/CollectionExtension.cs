@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Extensions
 {
-public static class EnumerableExtension
+public static class CollectionExtension
 {
 
     static readonly System.Random _random = new System.Random();

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using DG.Tweening;
+using Extensions;
 using UnityEngine;
 
 namespace Field.ItemGeneration.FieldItem
@@ -28,16 +30,18 @@ public class BallUi : MonoBehaviour
            .Pause();
     }
 
-    public void FollowPath( List<Vector2Int> path, TweenCallback onComplete )
+    public void FollowPath( List<Vector3> path, TweenCallback onComplete )
     {
         //.DeSelect -> StopSelectAnimation  происходит в другом месте
         Sequence sequence = DOTween.Sequence()
-           .SetEase( Ease.InOutSine );
+           .SetEase( Ease.InOutSine ); //todo cash
 
-        foreach ( Vector2Int point in path )
+        Debug.Log( $"<color=cyan> {path.FormatElementsToString()} </color>" );
+
+        foreach ( Vector3 point in path )
         {
             sequence.Append( transform
-                   .DOMove( (Vector2) point, _moveStepDuration ) )
+                   .DOMove( point, _moveStepDuration ) )
                 ; //ffixme здесь блочить инпут, на время анимации? да, т.к. игрок при долгом Move может успеть передвинуть еще 1 шар до "onComplete"
         }
 

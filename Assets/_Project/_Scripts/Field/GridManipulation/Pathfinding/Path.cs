@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Extensions;
 
 namespace Field.GridManipulation.Pathfinding
 {
@@ -9,12 +10,13 @@ public struct Path<TNode>
 
     public override string ToString( )
     {
-        string result = $"Path{nameof( IsSucceed )}: {IsSucceed}. ";
+        string result = $"Path {nameof( IsSucceed )}: {IsSucceed}. ";
 
         if ( IsSucceed )
         {
-            foreach ( TNode node in PathData )
-                result += node + ", " ;
+            result += PathData.FormatElementsToString();
+            // foreach ( TNode node in PathData )
+            //     result += node + ", " ;
         }
 
         return result;
