@@ -17,9 +17,12 @@ public class BallUi : MonoBehaviour
 
     Tween _infinityBounceLoopOnSelection;
     Vector3 _originPosition;
+    SpriteRenderer _spriteRenderer;
 
     void Awake( )
     {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+
         _infinityBounceLoopOnSelection = transform.DOLocalMoveY( _selectionAnimationVerticalAmplitude, _selectionAnimationCycleDuration )
            .SetLoops( - 1, LoopType.Yoyo )
            .Pause();
@@ -56,7 +59,7 @@ public class BallUi : MonoBehaviour
 
     public void Paint( ShapeType shapeType )
     {
-        SpritePainter.PaintSprite( this, shapeType );
+        SpritePainter.Paint( _spriteRenderer, shapeType );
     }
 
 }
