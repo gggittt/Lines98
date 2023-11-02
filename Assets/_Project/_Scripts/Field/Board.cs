@@ -86,13 +86,6 @@ public class Board : MonoBehaviour
     {
         Vector2Int targetCoords = target.LocalCoord;
         Path<Vector2Int> path = _pathfinder.GenerateAStarPath( from.LocalCoord, targetCoords );
-        //todo точки на Cell, кнопка подтверждения
-        //offer suggestPath.
-        //min2win шар телепортируется, а путь показывают точки!
-        //чтобы не предлагал похожие пути, во время фазы предложения игрок кликает на пустые клетки - и из них пытаться сделать путь.
-
-        Debug.Log( $"<color=cyan> {path} </color>" );
-
         if ( path.IsSucceed == false )
         {
             return;
