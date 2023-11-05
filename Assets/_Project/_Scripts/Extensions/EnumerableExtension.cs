@@ -12,7 +12,7 @@ public static class EnumerableExtension
         string result = "";
 
         foreach ( T element in self )
-            result += element + ", ";
+            result += element + ", "; //todo delete last comma
 
         return result;
     }
