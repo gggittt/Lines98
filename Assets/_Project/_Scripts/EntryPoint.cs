@@ -13,6 +13,8 @@ public class EntryPoint : MonoBehaviour
 
     void Start( )
     {
+        Logger.Log();
+
         Vector2Int size = new Vector2Int( _gameData.boardWidth, _gameData.boardHeight );
         _board.Init( size );
         _board.ItemMoved += LaunchNewTurn;

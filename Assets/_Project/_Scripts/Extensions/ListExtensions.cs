@@ -18,7 +18,12 @@ public static class ListExtensions
 
     public static HashSet<T> CombineWith<T>( this HashSet<T> self, IEnumerable<T> other )
     {
-        if ( self is null || other is null )
+        if ( self is null )
+        {
+            return other as HashSet<T>;
+        }
+
+        if ( other is null )
         {
             return self;
         }

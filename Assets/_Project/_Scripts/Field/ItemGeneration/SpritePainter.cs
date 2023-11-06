@@ -6,7 +6,7 @@ namespace Field.ItemGeneration
 {
 public static class SpritePainter
 {
-    static readonly Dictionary<ShapeType, Color> _dict = new Dictionary<ShapeType, Color>()
+    static readonly Dictionary<ShapeType, Color> _typeToColordict = new Dictionary<ShapeType, Color>()
     { { ShapeType.Red, Color.red },
       { ShapeType.Pink, Color.magenta }
      ,
@@ -15,12 +15,11 @@ public static class SpritePainter
       { ShapeType.Green, Color.green }
      ,
       { ShapeType.Yellow, Color.yellow }
-     ,
     };
 
     public static void Paint( SpriteRenderer renderer, ShapeType shapeType )
     {
-        if ( _dict.TryGetValue( shapeType, out Color value ) )
+        if ( _typeToColordict.TryGetValue( shapeType, out Color value ) )
         {
             renderer.color = value;
         }
