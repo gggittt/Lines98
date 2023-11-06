@@ -12,8 +12,8 @@ class RichColor
 
     static readonly string[] colors =
     { "#ff0000ff",
-      "#ff00ffff",
       "#00ffffff",
+      "#ff00ffff",
       "#00ff00ff",
       "#ffa500ff", };
 }

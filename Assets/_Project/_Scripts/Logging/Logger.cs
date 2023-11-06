@@ -6,6 +6,8 @@ public class Logger
 {
     // static UnityEngine.Object _context;
     //todo StringBuilder, мб убрать RichColor
+    // sample: Logger.Log(_debug, 1, _board, "dsf", 13242, 234234, 34, 342);
+
 
     public static void Log( params object[] args )
     {

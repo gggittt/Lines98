@@ -6,14 +6,12 @@ public class CellCreator : MonoBehaviour
 {
     [ SerializeField ] Cell _cellPrefab;
     [ SerializeField ] BoundCoordinatesCreator _boundCreator;
-    ClickManager _clickManager;
 
 
 
     //start at top left position
     public Grid<Cell> CreateBoard( ClickManager clickManager, Vector2Int size )
     {
-        _clickManager = clickManager;
 
         Grid<Cell> cellGrid = new Grid<Cell>( size.x, size.y );
 
@@ -30,7 +28,7 @@ public class CellCreator : MonoBehaviour
         {
             Cell cell = Instantiate( _cellPrefab, transform );
             cell.Init( new Vector2Int( x, y ) );
-            cell.Clicked += _clickManager.OnCellClick;
+            cell.Clicked += clickManager.OnCellClick;
             cellGrid.Set( x, y, cell );
 
             SetPosition();

@@ -32,6 +32,10 @@ public class MatchReaper //Collector
         {
             // _pool.Send( item );
 
+            // Ball ball = _itemGrid[ item ];
+            // _itemGrid[ item ] = null;
+            // _cellGrid[ item ].Ball = null;
+            // ball.gameObject.Destroy();
         }
     }
 }

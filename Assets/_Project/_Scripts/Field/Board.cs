@@ -22,8 +22,6 @@ public class Board : MonoBehaviour
     public List<Vector2Int> EmptyCellsIndexes => _positionsManager.GetEmptyCellsIndexes();
     //public Vector2Int GridSize => new Vector2Int( _itemGrid.Width, _itemGrid.Height );
 
-
-
     Grid<Ball> _itemGrid;
     Grid<Cell> _cellGrid;
     PositionManager _positionsManager;
