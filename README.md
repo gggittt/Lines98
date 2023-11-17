@@ -5,7 +5,6 @@
 
 Unity version - 2019.4.17f1. Choose older version for this project because is't faster and easier to prototype.
 
-The project is under development. At a technical interview, we can practice live coding, I can implement a feature of your choice.
 
 
 ## Game rules
