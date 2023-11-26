@@ -5,7 +5,6 @@
 
 Unity version - 2019.4.17f1. Choose older version for this project because is't faster and easier to prototype.
 
-The project is under development. At a technical interview, we can practice live coding, I can implement a feature of your choice.
 
 
 ## Game rules
@@ -37,31 +36,31 @@ Win condition - none, can play infinitely.
 - Architecture\ расцепить сильные связи везде где есть
 - Board разбить на более мелкие классы
 - Pathfind:
-- - while to recursion
+- - "while" to recursion
 - - проверить, что работает если разрешить перемещения по диагонали (передавать не 4 соседние клетки, а 8)
  -->
 ### At ending
-Check all namespaces, delete unused usings.
+- Check all namespaces, delete unused usings.
+- Delete ALL comments
 
 <!--
 ## Naming
 There may be an out-of-sync in the names "Ball -> Orb -> Item" or "Cell -> Node"
 
-- Изначально писал код под игру Lines 98, но чтобы можно было переиспользовать, например для Match 3, изменил naming передвигаемой игровой еденицы в клетке с Ball на Item. В Match3 объекты часто не шарики - а ракушки, алмазы, бомбы, пончики... - для них обзий термин не Ball или Gem, а Item
+- Изначально писал код под игру Lines 98, но чтобы можно было переиспользовать, например для Match 3, изменил naming передвигаемой игровой еденицы в клетке с Ball на Item. В Match3 объекты часто не шарики - а ракушки, алмазы, бомбы, пончики... - для них обзий термин не Ball или Gem, а Item (с другой стороны, Item это слишком общо. FieldItem?)
   Вероятно где-то изменить забыл. todo сделать поиск по всему проекту
 
 
 ## My codestyle
 `Rider settings -> Editor -> Code Style -> C#`
-I am ready to change my code style (I will update the Rider settings) when switching to another team.
 
- 
+
 - `var` оставляю редко. У меня глаза сами сразу тип ищут в начале строки.
 
 I prefer explicit type than `var`
 - Пробелы внутри скобок для лучшей читаемости. Не люблю когда подряд мешанина из символов.
 
-- К сожалению, `File Scoped Namespaces` (например,  `namespace TestCSharp10;`) доступен только в c# 10 (в unity пока максимум c# 9), а лишний отступ я не хочу. Поэтому ставлю `Braces Layout -> Ident inside namespace declaration = false`.
+- Не ставлю отступ для класса. К сожалению, `File Scoped Namespaces` (например,  `namespace TestCSharp10;`) доступен только в c# 10 (в unity пока максимум c# 9), а лишний отступ я не хочу. Поэтому ставлю `Braces Layout -> Ident inside namespace declaration = false`.
 -->
 
 
