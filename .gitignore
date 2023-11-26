@@ -2,6 +2,12 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
+
+#my
+[Aa]ssets/_Project/_Scripts/_Debug
+# [Aa]ssets/_Project/Code/Debug
+
+#
 [Bb]uild/
 [Bb]uilds/
 [Ll]ibrary/

@@ -3,18 +3,23 @@ using System.Collections.Generic;
 using Field;
 using Field.ItemGeneration;
 using Field.ItemGeneration.FieldItem;
+using Infrastructure;
 using UnityEngine;
 using Zenject;
 
-public class MainInstaller : MonoInstaller
+public class SceneMainInstaller : MonoInstaller
 {
     [ SerializeField ] GameData _data;
+
     public override void InstallBindings( )
     {
+        Debug.Log($"<color=cyan> {nameof(SceneMainInstaller)} </color> InstallBindings");
+
         // Container.Bind<IMatchReaper>().To<MatchReaper>().FromNew().AsSingle();
         // //мне интуитивно проще Bind<Xxx>().To<IXxx>()
 
-        Container.Bind<MatchReaper>().AsSingle().NonLazy(); //без интерфейса, тупо класс
+        // Container.Bind<MatchReaper>().AsSingle().NonLazy(); //без интерфейса, тупо класс
+        Container.Bind<SceneContextTest>().AsSingle().NonLazy();
         // get as https://youtu.be/jVFXnDd40CE?t=722 [Inject] void Construct(MatchReaper reaper){}
         // Container.Bind<ObjectsPoolMono>().AsSingle().NonLazy(); //без интерфейса, тупо класс
         //.FromNew() = и так по умолчанию
