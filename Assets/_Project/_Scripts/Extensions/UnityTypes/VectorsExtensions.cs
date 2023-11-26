@@ -18,5 +18,10 @@ public static class VectorsExtensions
     {
         return new Vector3( self.x + ( x ?? 0 ), self.y + ( y ?? 0 ), self.z + ( z ?? 0 ) );
     }
+
+    public static bool InRangeOf( this Vector3 self, Vector3 target, float range )
+    {
+        return (self - target).sqrMagnitude <= range * range;
+    }
 }
 }
